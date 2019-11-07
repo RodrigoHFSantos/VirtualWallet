@@ -23,3 +23,7 @@ Route::middleware('auth:api')->post('logout','LoginControllerAPI@logout');
 Route::middleware('auth:api')->get('teste', function () {
     return response()->json(['msg'=>'Só um teste'], 200);
 });
+
+//Routes for WalletControllerAPI
+Route::get('wallets', 'WalletControllerAPI@index');
+Route::get('wallets/total', 'WalletControllerAPI@totalWallets'); //numero de wallets existentes
