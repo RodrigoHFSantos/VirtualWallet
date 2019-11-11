@@ -1,5 +1,5 @@
 <template>
     <div class="flex-center">
-        Register page
+        Landing Page
     </div>
 </template>

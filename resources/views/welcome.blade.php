@@ -11,10 +11,7 @@
     </head>
     <body>
         <div id="app">
-            <navbar></navbar>
-            <div class="container">
-                Virtual Wallet
-            </div>
+            <master></master>
         </div>  
         </div>
 
