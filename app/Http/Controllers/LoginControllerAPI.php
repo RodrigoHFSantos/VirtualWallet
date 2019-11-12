@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 define('YOUR_SERVER_URL', 'http://virtualwallet.test');
 // Check "oauth_clients" table for next 2 values:
 define('CLIENT_ID', '2');
-define('CLIENT_SECRET','7jy4tj4ecJLXnFPxfloMcZ791DhiXIuE4kpM0Ris');
+define('CLIENT_SECRET','z12EOmDwK2HfzZinJ2WGcuOj7C2pNSWdrazVEpxj');
 
 class LoginControllerAPI extends Controller
 {

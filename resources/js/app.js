@@ -9,6 +9,7 @@ window.Vue = require('vue');
 
 import VueRouter from 'vue-router';
 import routes from './routes';
+import store from './store/global-store';
 
 Vue.use(VueRouter);
 
@@ -19,5 +20,6 @@ const router = new VueRouter({
 
 const app = new Vue({
     router,
+    store,
     // el: '#app'
 }).$mount('#app');

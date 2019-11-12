@@ -5,12 +5,12 @@
 
       <div class="form-control">
         <label for="email">Username/Email</label>
-        <input type="email" name="username" id="username" class="login-input" v-model="username">
+        <input type="email" name="username" id="username" class="login-input" v-model="user.username">
       </div>
 
       <div class="form-control mb-more">
         <label for="password">Password</label>
-        <input type="password" name="password" id="password" class="login-input" v-model="password">
+        <input type="password" name="password" id="password" class="login-input" v-model="user.password">
       </div>
 
       <div class="form-control">
@@ -26,22 +26,21 @@ export default {
     name: 'login',
     data(){
         return {
+          user: {
             username: '',
             password: '',
+          },
+            
             token: null,
         }
     },
     methods: {
         login: function() {
-            // console.log(this.username);
-            // console.log(this.password);
-            axios.post('api/login', {
-                username: this.username,
-                password: this.password,
-            })
+          axios.post('api/login', this.user)
             .then(response => {
-                console.log(response);
-                // this.$router.push('/home');
+                //console.log(response);
+                this.$store.commit("setToken", response.data.access_token);
+                this.$router.push( { name: "home" } );
             })
             .catch(error => {
                 console.log(error);
