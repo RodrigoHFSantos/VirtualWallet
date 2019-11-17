@@ -38,7 +38,7 @@ export default {
         login: function() {
           axios.post('api/login', this.user)
             .then(response => {
-                //console.log(response);
+                console.log(response);
                 this.$store.commit("setToken", response.data.access_token);
                 this.$router.push( { name: "home" } );
             })

@@ -8,12 +8,12 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
     state: {
-        token: '',
+        token: null,
         user: null,
     },
     getters: {
         loggedIn(state) {
-            return state.token !== '';
+            return state.token !== null;
         },
         isAdmin(state) {
             if(state.user)
@@ -34,10 +34,9 @@ export default new Vuex.Store({
             state.user = null;
             localStorage.removeItem('user');
         },
-        clearToken: state => {
-            state.token = '';
+        destroyToken: state => {
+            state.token = null;
             localStorage.removeItem('token');
-            axios.defaults.headers.common.Authorization = undefined;
         },
         setUser: (state, user) => {
             state.user = user;
@@ -60,6 +59,26 @@ export default new Vuex.Store({
             if (user) {
                 state.user = JSON.parse(user);
             }
-        },
+        } 
+    },
+    actions: {
+        destroyToken(context){
+            axios.defaults.headers.common.Authorization = 'Bearer ' + context.state.token;
+            if(context.getters.loggedIn){
+                return new Promise((resolve, reject) => {
+                    axios.post('/api/logout')
+                    .then(response => {
+                        localStorage.removeItem('access_token');
+                        context.commit('destroyToken');
+                        resolve(response);
+                    })
+                    .catch(error => {
+                        localStorage.removeItem('access_token');
+                        context.commit('destroyToken');
+                        reject(error);
+                    })
+                })
+            }
+        }
     }
 });

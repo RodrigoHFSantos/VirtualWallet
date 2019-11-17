@@ -21,7 +21,7 @@
 			getTotalWallets:function () {
 				axios.get('api/wallets/total')
 					.then(response=>{
-						console.log(response);
+						// console.log(response);
 						this.totalWallets = response.data;
 					})
 			}

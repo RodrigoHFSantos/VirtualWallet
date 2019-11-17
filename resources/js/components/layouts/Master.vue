@@ -3,8 +3,9 @@
     <ul class="nav">
       <li><router-link :to="{ name: 'home' }">Home</router-link></li>
       <li><router-link to="/about">About</router-link></li>
-      <li><router-link to="/login">Login</router-link></li>
-      <li><router-link to="/register">Register</router-link></li>
+      <li v-if="!loggedIn"><router-link to="/login">Login</router-link></li>
+      <li v-if="!loggedIn"><router-link to="/register">Register</router-link></li>
+      <li v-if="loggedIn"><router-link to="/logout">Logout</router-link></li>
     </ul>
 
     <router-view></router-view>
@@ -16,9 +17,11 @@
 // import NavbarComponent from './Navbar.vue';
 
 export default {
-    // components: {
-    //     'navbar': NavbarComponent,
-    // }
+   computed: {
+     loggedIn: function(){
+       return this.$store.getters.loggedIn;
+     }
+   }
 }
 </script>
 
