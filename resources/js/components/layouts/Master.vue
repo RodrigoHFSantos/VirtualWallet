@@ -1,4 +1,6 @@
 <template>
+<v-app>
+
   <div id="app">
     <ul class="nav">
       <li><router-link :to="{ name: 'home' }">Home</router-link></li>
@@ -10,6 +12,7 @@
 
     <router-view></router-view>
   </div>
+</v-app>
 </template>
 
 
