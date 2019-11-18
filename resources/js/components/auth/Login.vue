@@ -36,15 +36,15 @@ export default {
     },
     methods: {
         login: function() {
-          axios.post('api/login', this.user)
+          this.$store.dispatch('retrieveToken', this.user)
             .then(response => {
-                console.log(response);
-                this.$store.commit("setToken", response.data.access_token);
-                this.$router.push( { name: "home" } );
+              console.log(response);
+              this.$router.push( { name: "home" } );
             })
             .catch(error => {
-                console.log(error);
-            });
+              console.log(error);
+            })
+          
         }
     }
 }

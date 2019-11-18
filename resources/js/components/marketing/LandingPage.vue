@@ -1,9 +1,9 @@
 <template>
 	<div>
-	    <div id=""class="flex-center"> 
+	    <div id="" class="flex-center"> 
 	        Landing Page
 	    </div>
-	    <div id=""class="flex-center">
+	    <div id="" class="flex-center">
 	    	Total Wallets -> {{totalWallets}}
 	    </div>
     </div>
@@ -21,7 +21,6 @@
 			getTotalWallets:function () {
 				axios.get('api/wallets/total')
 					.then(response=>{
-						// console.log(response);
 						this.totalWallets = response.data;
 					})
 			}
