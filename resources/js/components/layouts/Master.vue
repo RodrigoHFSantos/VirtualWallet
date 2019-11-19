@@ -7,7 +7,7 @@
       <li><router-link to="/about">About</router-link></li>
       <li v-if="!loggedIn"><router-link to="/login">Login</router-link></li>
       <li v-if="!loggedIn"><router-link to="/register">Register</router-link></li>
-      <li v-if="loggedIn"><router-link to="/logout">Logout</router-link></li>
+      <li v-if="loggedIn"> <a v-on:click.prevent="logout()">Logout</a></li>
     </ul>
 
     <router-view></router-view>
@@ -24,7 +24,18 @@ export default {
      loggedIn: function(){
        return this.$store.getters.loggedIn;
      }
+   },
+   methods: {
+     logout: function() {
+        this.$store.dispatch('destroyToken')
+            .then(response => {
+                this.$router.push({ name: "home" })
+                console.log("LOGOUT");
+            })
+      }  
+
    }
+
 }
 </script>
 
