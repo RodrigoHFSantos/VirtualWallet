@@ -1,24 +1,57 @@
 <template>
-  <div class="login-form">
-    <h2 class="login-heading">Login</h2>
-    <form action="#" @submit.prevent="login">
+  <v-app id="inspire">
+    <v-content>
+      <v-container
+        class="fill-height"
+        fluid
+      >
+        <v-row
+          align="center"
+          justify="center"
+        >
+          <v-col
+            cols="12"
+            sm="8"
+            md="4"
+          >
+            <v-card class="elevation-12">
+              <v-toolbar
+                color="primary"
+                dark
+                flat
+              >
+                <v-toolbar-title>Login</v-toolbar-title>
+                <v-spacer />
+              </v-toolbar>
+              <v-card-text>
+                <v-form   id="check-login-form">
+                  <v-text-field
+                    label="Username/Email"
+                    name="username"
+                    type="email"
+                    id="username"
+                    v-model="user.username"
+                  />
 
-      <div class="form-control">
-        <label for="email">Username/Email</label>
-        <input type="email" name="username" id="username" class="login-input" v-model="user.username">
-      </div>
-
-      <div class="form-control mb-more">
-        <label for="password">Password</label>
-        <input type="password" name="password" id="password" class="login-input" v-model="user.password">
-      </div>
-
-      <div class="form-control">
-        <button type="submit" class="btn-submit">Login</button>
-      </div>
-
-    </form>
-  </div>
+                  <v-text-field
+                    id="password"
+                    label="Password"
+                    name="password"
+                    type="password"
+                    v-model="user.password"
+                  />
+                </v-form>
+              </v-card-text>
+              <v-card-actions>
+                <v-spacer />
+                <v-btn color="primary" form="check-login-form" @click="login">Login</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-content>
+  </v-app>
 </template>
 
 <script>
@@ -38,7 +71,6 @@ export default {
         login: function() {
           this.$store.dispatch('retrieveToken', this.user)
             .then(response => {
-              console.log(response);
               this.$router.push( { name: "home" } );
             })
             .catch(error => {

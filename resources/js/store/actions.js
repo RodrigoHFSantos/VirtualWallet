@@ -14,7 +14,6 @@ export default {
                 password: credentials.password,
               })
             .then(response => {
-                console.log(response.data.access_token);
                 const token = response.data.access_token;
                 localStorage.setItem('access_token', token);
                 context.commit('setToken', token);

@@ -9,8 +9,6 @@ const login = Vue.component('login', LoginComponent);
 import RegisterComponent from './components/auth/Register.vue';
 const register = Vue.component('register', RegisterComponent);
 
-import LogoutComponent from './components/auth/Logout.vue';
-const logout = Vue.component('logout', LogoutComponent);
 
 import LandingPageComponent from './components/marketing/LandingPage.vue';
 const landingpage = Vue.component('landingpage', LandingPageComponent);
@@ -30,20 +28,26 @@ const routes = [
     {
         path: '/login',
         name: 'login',
-        component: login
+        component: login,
+        meta: {
+            requiresVisitor: true,
+        }
     },
 
     {
         path: '/register',
         name: 'register',
-        component: register
+        component: register,
+        meta: {
+            requiresVisitor: true,
+        }
     },
 
-    {
-        path: '/logout',
-        name: 'logout',
-        component: logout
-    },
+    // {
+    //     path: '/logout',
+    //     name: 'logout',
+    //     component: logout
+    // },
 
     {
         path: '/about',

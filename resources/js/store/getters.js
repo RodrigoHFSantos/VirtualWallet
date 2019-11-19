@@ -1,6 +1,6 @@
 export default {
     loggedIn(state) {
-        return state.token !== null;
+        return state.token !== '';
     },
     isAdmin(state) {
         if(state.user)
