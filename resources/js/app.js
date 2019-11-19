@@ -19,9 +19,33 @@ const router = new VueRouter({
     // history = true //era suposto tirar o # do url mas nao funciona
 })
 
+router.beforeEach((to, from, next) => {
+    if (to.matched.some(record => record.meta.requiresAuth)) {
+      if (!store.getters.loggedIn) {
+        next({
+          name: 'login',
+        })
+      } else {
+        next()
+      }
+    } else if (to.matched.some(record => record.meta.requiresVisitor)) {
+      if (store.getters.loggedIn) {
+        next({
+          name: 'home',
+        })
+      } else {
+        next()
+      }
+    } else {
+      next()
+    }
+  })
+
 const app = new Vue({
     router,
     store,
     vuetify,
-    // el: '#app'
+    created() {
+      this.$store.commit('loadTokenAndUserFromSession');
+    }
 }).$mount('#app');

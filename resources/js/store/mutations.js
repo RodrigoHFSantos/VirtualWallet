@@ -14,8 +14,8 @@ export default {
         localStorage.removeItem('user');
     },
     destroyToken: state => {
-        state.token = null;
-        localStorage.removeItem('token');
+        state.token = '';
+        // localStorage.removeItem('token');
     },
     setUser: (state, user) => {
         state.user = user;
@@ -27,7 +27,7 @@ export default {
     loadTokenAndUserFromSession: state => {
         state.token = '';
         state.user = null;
-        let token = localStorage.getItem('token');
+        let token = localStorage.getItem('access_token');
         let user = localStorage.getItem('user');
         if (token) {
             state.token = token;

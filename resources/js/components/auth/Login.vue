@@ -71,7 +71,6 @@ export default {
         login: function() {
           this.$store.dispatch('retrieveToken', this.user)
             .then(response => {
-              console.log(response);
               this.$router.push( { name: "home" } );
             })
             .catch(error => {

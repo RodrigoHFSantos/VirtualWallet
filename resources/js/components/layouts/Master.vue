@@ -29,8 +29,10 @@ export default {
      logout: function() {
         this.$store.dispatch('destroyToken')
             .then(response => {
+              const path = this.$router.currentRoute.path;
+              if(this.$router.currentRoute.path !== path){
                 this.$router.push({ name: "home" })
-                console.log("LOGOUT");
+              }
             })
       }  
 
