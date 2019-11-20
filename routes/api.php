@@ -28,4 +28,4 @@ Route::get('wallets/total', 'WalletControllerAPI@totalWallets'); //numero de wal
 
 
 //Routes for Users
-Route::get('users/me', 'UserControllerAPI@myProfile');
+Route::middleware('auth:api')->get('users/me', 'UserControllerAPI@myProfile');

@@ -1,36 +1,22 @@
 <template>
   <v-app id="inspire">
     <v-content>
-      <v-container
-        class="fill-height"
-        fluid
-      >
-        <v-row
-          align="center"
-          justify="center"
-        >
-          <v-col
-            cols="12"
-            sm="8"
-            md="4"
-          >
+      <v-container class="fill-height" fluid>
+        <v-row align="center" justify="center">
+          <v-col cols="12" sm="8" md="4">
             <v-card class="elevation-12">
-              <v-toolbar
-                color="primary"
-                dark
-                flat
-              >
+              <v-toolbar color="primary" dark flat>
                 <v-toolbar-title>Login</v-toolbar-title>
                 <v-spacer />
               </v-toolbar>
               <v-card-text>
-                <v-form   id="check-login-form">
+                <v-form id="check-login-form">
                   <v-text-field
-                    label="Username/Email"
+                    label="Email"
                     name="username"
                     type="email"
                     id="username"
-                    v-model="user.username"
+                    v-model="user.email"
                   />
 
                   <v-text-field
@@ -56,28 +42,25 @@
 
 <script>
 export default {
-    name: 'login',
-    data(){
-        return {
-          user: {
-            username: '',
-            password: '',
-          },
-            
-            token: null,
-        }
-    },
-    methods: {
-        login: function() {
-          this.$store.dispatch('retrieveToken', this.user)
-            .then(response => {
-              this.$router.push( { name: "home" } );
-            })
-            .catch(error => {
-              console.log(error);
-            })
-          
-        }
-    }
+   data() {
+      return {
+         user: {
+            email: "",
+            password: ""
+         }
+      }
+   },
+   methods: {
+      login: function() {
+         axios.post('api/login', this.user).then(response => {
+            this.$store.commit("setToken", response.data.access_token);
+            return axios.get("api/users/me");
+         })
+         .then(response => {
+            this.$store.commit("setUser", response.data.data);
+            this.$router.push({ name: "home" });
+         })
+      }
+   }
 }
 </script>

@@ -23,7 +23,7 @@
 					.then(response=>{
 						this.totalWallets = response.data;
 					})
-			}
+			},
 		},
 		
 		mounted(){

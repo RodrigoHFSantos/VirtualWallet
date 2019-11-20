@@ -4,24 +4,18 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-//
-define('YOUR_SERVER_URL', 'http://virtualwallet.test');
-// Check "oauth_clients" table for next 2 values:
-define('CLIENT_ID', '2');
-define('CLIENT_SECRET','z12EOmDwK2HfzZinJ2WGcuOj7C2pNSWdrazVEpxj');
-
 class LoginControllerAPI extends Controller
 {
      
     public function login(Request $request)
     {
         $http = new \GuzzleHttp\Client;
-        $response = $http->post(YOUR_SERVER_URL.'/oauth/token', [
+        $response = $http->post(env('YOUR_SERVER_URL').'/oauth/token', [
                 'form_params' => [
                 'grant_type' => 'password',
-                'client_id' => CLIENT_ID,
-                'client_secret' => CLIENT_SECRET,
-                'username' => $request->username,
+                'client_id' => env('CLIENT_ID'),
+                'client_secret' => env('CLIENT_SECRET'),
+                'username' => $request->email,
                 'password' => $request->password,
                 'scope' => ''
             ],

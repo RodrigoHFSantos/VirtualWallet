@@ -12,11 +12,19 @@
               <v-card-text>
                 <v-form id="check-login-form">
                   <v-text-field
+                    label="Name"
+                    name="name"
+                    type="name"
+                    id="name"
+                    v-model="name"
+                  />
+
+                  <v-text-field
                     label="Email"
-                    name="username"
+                    name="email"
                     type="email"
-                    id="username"
-                    v-model="user.username"
+                    id="email"
+                    v-model="email"
                   />
 
                   <v-text-field
@@ -24,23 +32,32 @@
                     label="Password"
                     name="password"
                     type="password"
-                    v-model="user.password"
+                    v-model="password"
                   />
                    <v-text-field
                     id="nif"
                     label="NIF"
                     name="nif"
                     type="nif"
-                    v-model="user.nif"
+                    v-model="nif"
                   />
                 <br>
-                  <p><font size="4">Photo (Optional)</font></p>
-                   <v-image-input
-                    v-model="user.photo"
-                    :image-quality="0.85"
-                    clearable
-                    image-format="jpeg"
-                />
+                <div class="form-control mb-more">
+                    <label for="photo">PHOTO</label>
+                    <div>
+                      <img :src="imageUrl" height="150">
+                    </div>
+                    <div>
+                      <v-btn small color="error" @click="onPickFile">Upload Image</v-btn>
+                      <input 
+                        type="file"
+                        style="display: none"
+                        ref="fileInput"
+                        accept="image/*"
+                        @change="onFilePicked"
+                        >  
+                    </div>
+                </div>
                 </v-form>
               </v-card-text>
               <v-card-actions>
@@ -56,27 +73,52 @@
 </template>
 
 <script>
-import VImageInput from 'vuetify-image-input';
+
 
 export default {
-    name: "register",
-    components: {
-        VImageInput,
-  },
+    name: 'register',
   data: function() {
     return {
-      user: {
-        username: "",
-        password: "",
-        nif: "",
-        photo: ""
-      },
-    };
+        name: '',
+        email: '',
+        password: '',
+        nif: '',
+        // photo: '',
+        imageData: '',
+        imageUrl: '',
+        image: null,
+    }
   },
   methods: {
       register: function() {
-          console.log(user.photo);
-      }
+        //console.log(this.photo.imageUrl);
+         axios.post('api/register', {
+           name: this.name,
+           email: this.email,
+           password: this.password,
+           nif: this.nif,
+           photo: this.photo,
+         })
+         .then(response => {
+           this.$router.push({name: 'login'})
+         })
+      },
+      onPickFile(){
+        this.$refs.fileInput.click();
+      },
+      onFilePicked (event) {
+        const files = event.target.files
+        let filename = files[0].name
+        if(filename.lastIndexOf('.') <= 0){
+          return alert("Please add a valid file!!")
+        }
+        const fileReader = new FileReader()
+        fileReader.addEventListener('load', () => {
+        this.imageUrl = fileReader.result
+        })
+      fileReader.readAsDataURL(files[0])
+      this.photo = filename
+    }
   }
 };
 </script>
