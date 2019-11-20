@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Hash;
 
 class RegisterControllerAPI extends Controller
 {
-    public function Register(Request $request)
+    public function register(Request $request)
     {
         $request->validate([
             'name' => 'required|string|max:255',
@@ -22,6 +22,8 @@ class RegisterControllerAPI extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'nif' => $request->nif,
+            'photo' => $request->photo,
         ]);
 
     }
