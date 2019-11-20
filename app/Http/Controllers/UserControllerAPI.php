@@ -9,7 +9,6 @@ class UserControllerAPI extends Controller
 {
     public function myProfile(Request $request)
     {
-        dd($request);
         return new UserResource($request->user());
     }
 }

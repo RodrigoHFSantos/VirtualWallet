@@ -26,16 +26,15 @@ export default {
      }
    },
    methods: {
-     logout: function() {
-        this.$store.dispatch('destroyToken')
-            .then(response => {
-              const path = this.$router.currentRoute.path;
-              if(this.$router.currentRoute.path !== path){
-                this.$router.push({ name: "home" })
-              }
-            })
-      }  
-
+     logout() {
+      axios.post("api/logout").then(response => {
+        this.$store.commit("clearUserAndToken");
+        this.$router.push({name: "login"});
+      })
+      .catch(error => {
+        this.$store.commit("clearUserAndToken");
+      });
+    }
    }
 
 }

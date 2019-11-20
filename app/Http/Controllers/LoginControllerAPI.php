@@ -21,7 +21,7 @@ class LoginControllerAPI extends Controller
                 'grant_type' => 'password',
                 'client_id' => CLIENT_ID,
                 'client_secret' => CLIENT_SECRET,
-                'username' => $request->username,
+                'username' => $request->email,
                 'password' => $request->password,
                 'scope' => ''
             ],
