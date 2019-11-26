@@ -20,33 +20,33 @@ export default new Vuex.Store({
         clearUserAndToken: (state) => {
             state.user = null;
             state.token = "";
-            localStorage.removeItem('user');
-            localStorage.removeItem('token');
+            sessionStorage.removeItem('user');
+            sessionStorage.removeItem('token');
             axios.defaults.headers.common.Authorization = undefined;
         },
         clearUser: (state) => {
             state.user = null;
-            localStorage.removeItem('user');
+            sessionStorage.removeItem('user');
         },
         clearToken: (state) => {
             state.token = "";
-            localStorage.removeItem('token');
+            sessionStorage.removeItem('token');
             axios.defaults.headers.common.Authorization = undefined;
         },
         setUser: (state, user) => {
             state.user = user;
-            localStorage.setItem('user', JSON.stringify(user));
+            sessionStorage.setItem('user', JSON.stringify(user));
         },
         setToken: (state, token) => {
             state.token = token;
-            localStorage.setItem('token', token);
+            sessionStorage.setItem('token', token);
             axios.defaults.headers.common.Authorization = "Bearer " + token;
         },
         loadTokenAndUserFromSession: (state) => {
             state.token = "";
             state.user = null;
-            let token = localStorage.getItem('token');
-            let user = localStorage.getItem('user');
+            let token = sessionStorage.getItem('token');
+            let user = sessionStorage.getItem('user');
             if (token) {
                 state.token = token;
                 axios.defaults.headers.common.Authorization = "Bearer " + token;
