@@ -1,20 +1,43 @@
 <template>
-<v-app>
+  <v-app>
+    <v-card>
+      <v-toolbar dense color="deep-orange darken-3">
 
-  <div id="app">
-    <ul class="nav">
-      <li><router-link :to="{ name: 'home' }">Home</router-link></li>
-      <li><router-link to="/about">About</router-link></li>
-      <li v-if="!loggedIn"><router-link to="/login">Login</router-link></li>
-      <li v-if="!loggedIn"><router-link to="/register">Register</router-link></li>
-      <li v-if="loggedIn"> <a v-on:click.prevent="logout()">Logout</a></li>
-    </ul>
+        <v-toolbar-title class="white--text">
+          <v-icon color="white">mdi-wallet</v-icon> Virtual Wallet  
+        </v-toolbar-title>
 
+        <v-spacer></v-spacer>
+
+        <v-btn icon color="white" :to="{ name: 'home' }">
+          <v-icon>mdi-home</v-icon>
+        </v-btn>
+
+        <v-btn icon color="white" to="/about">
+          <v-icon>mdi-information</v-icon>
+        </v-btn>
+
+        <v-menu
+          left
+          bottom
+        >
+          <template v-slot:activator="{ on }">
+            <v-btn icon v-on="on" color="white">
+              <v-icon>mdi-dots-vertical</v-icon>
+            </v-btn>
+          </template>
+
+          <v-list>
+            <v-list-item v-if="!loggedIn" to="/login">Login</v-list-item>
+            <v-list-item v-if="!loggedIn" to="/register">Register</v-list-item>
+            <v-list-item v-if="loggedIn" v-on:click.prevent="logout()">Logout</v-list-item>
+          </v-list>
+        </v-menu>
+      </v-toolbar>      
+    </v-card>
     <router-view></router-view>
-  </div>
-</v-app>
+  </v-app>
 </template>
-
 
 <script>
 // import NavbarComponent from './Navbar.vue';
@@ -50,33 +73,15 @@ export default {
     font-family: 'Avenir', Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    color: #2c3e50;
     font-size: 24px;
     height: 100vh;
+    background-color: #FFE0B2;
   }
   .flex-center {
     display: flex;
     justify-content: center;
   }
-  .nav {
-    display: flex;
-    list-style: none;
-    padding: 15px 0;
-    margin: 0;
-    justify-content: flex-end;
-    background: #F5F8FA;
-    border-bottom: 1px solid lightgrey;
-    margin-bottom: 24px;
-  }
-  .nav a {
-    color: #636b6f;
-    padding: 0 25px;
-    font-size: 14px;
-    font-weight: 600;
-    letter-spacing: .1rem;
-    text-decoration: none;
-    text-transform: uppercase;
-  }
+
   // Auth Pages
   label {
     display: block;
@@ -116,4 +121,8 @@ export default {
       background: darken(#60BD4F, 10%);
     }
   }
+
+
+
+  
 </style>
