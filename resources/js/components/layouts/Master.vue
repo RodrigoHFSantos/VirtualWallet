@@ -31,6 +31,7 @@
             <v-list-item v-if="!loggedIn" to="/login">Login</v-list-item>
             <v-list-item v-if="!loggedIn" to="/register">Register</v-list-item>
             <v-list-item v-if="loggedIn" v-on:click.prevent="logout()">Logout</v-list-item>
+            <v-list-item v-if="loggedIn" :to="{ name: 'editprofile' }">Edit Profile</v-list-item>
           </v-list>
         </v-menu>
       </v-toolbar>      
@@ -122,8 +123,4 @@ export default {
       background: darken(#60BD4F, 10%);
     }
   }
-
-
-
-  
 </style>
