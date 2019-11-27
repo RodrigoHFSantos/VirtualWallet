@@ -100,7 +100,18 @@ export default {
            photo: this.photo,
          })
          .then(response => {
-           this.$router.push({name: 'login'})
+           axios.post('api/wallets/create', {
+             email: this.email,
+           })
+           .then(response => {
+              this.$router.push({name: 'login'})
+           })
+           .catch(error => {
+             console.log(error);
+           })
+          .catch(error => {
+            console.log(error);
+          })
          })
       },
       onPickFile(){
@@ -122,3 +133,4 @@ export default {
   }
 };
 </script>
+

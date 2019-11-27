@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Wallet extends Model
 {
-    protected $fillable = ['email'];
+    protected $fillable = ['id', 'email'];
 
     protected $attributes = [
         'balance' => 0,
@@ -14,6 +14,11 @@ class Wallet extends Model
 
     public function user()
     {
-        return $this->belongsTo('App\User', 'email');
+        return $this->belongsTo('App\User', 'id');
+    }
+
+    public function movements()
+    {
+        return $this->hasMany('App\Movement', ['wallet_id', 'transfer_wallet_id']);
     }
 }

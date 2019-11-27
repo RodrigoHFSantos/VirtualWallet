@@ -20,7 +20,6 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        // 'password_confirmation',
         'nif',
         'photo'
     ];
@@ -45,6 +44,6 @@ class User extends Authenticatable
 
     public function wallet()
     {
-        return $this->hasOne('App\Wallet', 'email');
+        return $this->hasOne('App\Wallet', 'id');
     }
 }
