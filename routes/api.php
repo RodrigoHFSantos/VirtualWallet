@@ -29,3 +29,4 @@ Route::get('wallets/total', 'WalletControllerAPI@totalWallets'); //numero de wal
 
 //Routes for Users
 Route::middleware('auth:api')->get('users/me', 'UserControllerAPI@myProfile');
+Route::middleware('auth:api')->put('users/me', 'UserControllerAPI@editprofile')->name('editprofile');

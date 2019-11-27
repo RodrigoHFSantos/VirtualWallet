@@ -8,8 +8,8 @@
       <li v-if="!loggedIn"><router-link to="/login">Login</router-link></li>
       <li v-if="!loggedIn"><router-link to="/register">Register</router-link></li>
       <li v-if="loggedIn"> <a v-on:click.prevent="logout()">Logout</a></li>
+      <li v-if="loggedIn"><router-link :to="{ name: 'editprofile' }">Edit Profile</router-link></li>
     </ul>
-
     <router-view></router-view>
   </div>
 </v-app>

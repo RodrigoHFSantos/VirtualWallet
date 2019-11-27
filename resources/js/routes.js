@@ -9,12 +9,14 @@ const login = Vue.component('login', LoginComponent);
 import RegisterComponent from './components/auth/Register.vue';
 const register = Vue.component('register', RegisterComponent);
 
-
 import LandingPageComponent from './components/marketing/LandingPage.vue';
 const landingpage = Vue.component('landingpage', LandingPageComponent);
 
 import AboutComponent from './components/marketing/About.vue';
 const about = Vue.component('about', AboutComponent);
+
+import EditProfileComponent from './components/EditProfile.vue';
+const editprofile = Vue.component('editprofile', EditProfileComponent);
 
 
 
@@ -53,6 +55,12 @@ const routes = [
         path: '/about',
         name: 'about',
         component: about
+    },
+
+    {
+        path: '/users/me',
+        name: 'editprofile',
+        component: editprofile,
     },
 ]
 
