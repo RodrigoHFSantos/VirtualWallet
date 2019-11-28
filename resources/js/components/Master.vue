@@ -17,6 +17,10 @@
           <v-icon>mdi-information</v-icon>
         </v-btn>
 
+        <v-btn icon color="white" :to="{ name: 'operator-movement-income' }">
+          <v-icon>mdi-cached</v-icon>
+        </v-btn>
+
         <v-menu
           left
           bottom

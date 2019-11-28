@@ -1,6 +1,6 @@
 window.Vue = require('vue');
 
-import MasterComponent from './components/layouts/Master.vue';
+import MasterComponent from './components/Master.vue';
 const master = Vue.component('master', MasterComponent);
 
 import LoginComponent from './components/auth/Login.vue';
@@ -17,6 +17,8 @@ const about = Vue.component('about', AboutComponent);
 
 import EditProfileComponent from './components/EditProfile.vue';
 const editprofile = Vue.component('editprofile', EditProfileComponent);
+import OperatorIncomeMovementComponent from './components/movements/operator/RegisterIncome.vue';
+const operatorMovementIncome = Vue.component('operatorIncomeMovement', OperatorIncomeMovementComponent);
 
 
 
@@ -45,12 +47,6 @@ const routes = [
         }
     },
 
-    // {
-    //     path: '/logout',
-    //     name: 'logout',
-    //     component: logout
-    // },
-
     {
         path: '/about',
         name: 'about',
@@ -61,6 +57,12 @@ const routes = [
         path: '/users/me',
         name: 'editprofile',
         component: editprofile,
+    },
+
+    {
+        path: '/operator/movements/register-income',
+        name: 'operator-movement-income',
+        component: operatorMovementIncome
     },
 ]
 

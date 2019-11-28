@@ -31,3 +31,6 @@ Route::post('wallets/create', 'WalletControllerAPI@create');
 //Routes for Users
 Route::middleware('auth:api')->get('users/me', 'UserControllerAPI@myProfile');
 Route::middleware('auth:api')->put('users/me', 'UserControllerAPI@editprofile')->name('editprofile');
+
+//Routes for Movements
+Route::post('movements/register', 'MovementControllerAPI@register');
