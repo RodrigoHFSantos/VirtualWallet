@@ -17,7 +17,7 @@
           <v-icon>mdi-information</v-icon>
         </v-btn>
 
-        <v-btn icon color="white" :to="{ name: 'operator-movement-income' }">
+        <v-btn v-if="loggedIn && isOperator" icon color="white" :to="{ name: 'operator-movement-income' }">
           <v-icon>mdi-cached</v-icon>
         </v-btn>
 
@@ -53,6 +53,9 @@ export default {
    computed: {
      loggedIn: function(){
        return this.$store.getters.loggedIn;
+     },
+     isOperator: function(){
+       return this.$store.getters.isOperator;
      }
    },
    methods: {

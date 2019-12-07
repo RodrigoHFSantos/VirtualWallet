@@ -14,6 +14,15 @@ export default new Vuex.Store({
     getters: {
         loggedIn(state) {
             return state.token !== "";
+        },
+        isAdmin(state){
+            return state.user!=null && state.user.type=="a";
+        },
+        isOperator(state){
+            return state.user!=null && state.user.type=="o";
+        },
+        isUser(state){
+            return state.user!=null && state.user.type=="u";
         }
     },
     mutations: {
