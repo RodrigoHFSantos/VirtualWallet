@@ -36,6 +36,7 @@
             <v-list-item v-if="!loggedIn" to="/register">Register</v-list-item>
             <v-list-item v-if="loggedIn" v-on:click.prevent="logout()">Logout</v-list-item>
             <v-list-item v-if="loggedIn" :to="{ name: 'editprofile' }">Edit Profile</v-list-item>
+            <v-list-item v-if="loggedIn" to="/wallet/me">Wallet</v-list-item>
           </v-list>
         </v-menu>
       </v-toolbar>      
