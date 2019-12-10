@@ -76,7 +76,7 @@
 				})
 			},
 			add:function() {
-				alert("this");
+				
 			}
 		},
 		

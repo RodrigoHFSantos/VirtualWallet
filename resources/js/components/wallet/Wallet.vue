@@ -1,21 +1,24 @@
 
 <template>
   <v-card
-    class="mx-auto"
-    max-width="344"
-    outlined
+    class="mx-auto card"
+	height="500px"
   >
-    <v-list-item three-line>
-      <v-list-item-content>
-        <div class="overline mb-4">Wallet</div>
-        <v-list-item-title class="headline mb-1">{{name}}</v-list-item-title>
-        <v-list-item-subtitle>{{email}}</v-list-item-subtitle>
-      </v-list-item-content>
+    <v-img
+      class="white--text align-end"
+      height="140px"
+      src="https://media.threatpost.com/wp-content/uploads/sites/103/2018/12/31080353/Crypto-Wallet.jpg"
+    >
+      
+    </v-img>
+	<v-card-title color="black">Wallet</v-card-title>
 
-    </v-list-item>
-
-    <v-card-actions>
-      <v-btn to="/wallet/movements/me">Movements</v-btn>
+    <v-card-text class="text--primary">
+		<label class="label">{{name}}</label>
+		<label>{{email}}</label>
+    </v-card-text>
+    <v-card-actions class="justify-center align-content-end " >
+      <v-btn block  color="blue-grey darken-1" to="/wallet/movements/me">Movements</v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -44,3 +47,24 @@
 		}
 	}
 </script>
+
+<style lang="scss" scoped>
+
+  .card{
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin-right: -50%;
+	transform: translate(-50%, -50%);
+	// height: 500px;
+	width: 500px;
+  }
+
+  .title{
+	  font-size: 40px;
+  }
+
+  .label{
+	  font-size: 30px;
+  }
+</style>

@@ -1,55 +1,88 @@
 <template>
-  <v-app>
-    <v-card>
-      <v-toolbar dense color="deep-orange darken-3">
+  <div id="app">
+    <v-app id="inspire">
+      <v-navigation-drawer
+        v-model="drawer"
+        app
+      >
+        <v-list dense>
+          <v-list-item v-if="!loggedIn" :to="{ name: 'home' }">
+            <v-list-item-action>
+              <v-icon>mdi-home</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>Home</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item v-if="loggedIn" v-on:click.prevent="logout()">
+            <v-list-item-action>
+              <v-icon>mdi-logout</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>Logout</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item v-if="loggedIn" to="/wallet/me">
+            <v-list-item-action>
+              <v-icon>mdi-wallet</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>Wallet</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item v-if="loggedIn" :to="{ name: 'editprofile' }">
+            <v-list-item-action>
+              <v-icon>mdi-account</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>Edit Profile</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item v-if="loggedIn && isOperator" :to="{ name: 'operator-movement-income' }">
+            <v-list-item-action>
+              <v-icon>mdi-cached</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>Movement Income</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item to="/about">
+            <v-list-item-action>
+              <v-icon>mdi-information</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>About</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+          
+        </v-list>
+      </v-navigation-drawer>
 
-        <v-toolbar-title class="white--text">
-          <v-icon color="white">mdi-wallet</v-icon> Virtual Wallet  
-        </v-toolbar-title>
-
+      <v-app-bar app fixed dense>
+        <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+        <v-toolbar-title>Virtual Wallet</v-toolbar-title>
         <v-spacer></v-spacer>
+      </v-app-bar>
+      <v-content fill-height fluid>
+          <router-view></router-view>
+      </v-content>
 
-        <v-btn icon color="white" :to="{ name: 'home' }">
-          <v-icon>mdi-home</v-icon>
-        </v-btn>
-
-        <v-btn icon color="white" to="/about">
-          <v-icon>mdi-information</v-icon>
-        </v-btn>
-
-        <v-btn v-if="loggedIn && isOperator" icon color="white" :to="{ name: 'operator-movement-income' }">
-          <v-icon>mdi-cached</v-icon>
-        </v-btn>
-
-        <v-menu
-          left
-          bottom
-        >
-          <template v-slot:activator="{ on }">
-            <v-btn icon v-on="on" color="white">
-              <v-icon>mdi-dots-vertical</v-icon>
-            </v-btn>
-          </template>
-
-          <v-list>
-            <v-list-item v-if="!loggedIn" to="/login">Login</v-list-item>
-            <v-list-item v-if="!loggedIn" to="/register">Register</v-list-item>
-            <v-list-item v-if="loggedIn" v-on:click.prevent="logout()">Logout</v-list-item>
-            <v-list-item v-if="loggedIn" :to="{ name: 'editprofile' }">Edit Profile</v-list-item>
-            <v-list-item v-if="loggedIn" to="/wallet/me">Wallet</v-list-item>
-          </v-list>
-        </v-menu>
-      </v-toolbar>      
-    </v-card>
-
-    <router-view></router-view>
-  </v-app>
+      <v-footer app class="footer">
+        <span>&copy; 2019</span>
+      </v-footer>
+    </v-app>
+  </div>
 </template>
 
+
 <script>
-// import NavbarComponent from './Navbar.vue';
 
 export default {
+    data: function () {
+        return {
+          drawer: null
+        }
+    },
    computed: {
      loggedIn: function(){
        return this.$store.getters.loggedIn;
@@ -62,7 +95,7 @@ export default {
      logout() {
       axios.post("api/logout").then(response => {
         this.$store.commit("clearUserAndToken");
-        this.$router.push({name: "login"});
+        this.$router.push({name: "home"});
       })
       .catch(error => {
         this.$store.commit("clearUserAndToken");
@@ -74,61 +107,9 @@ export default {
 </script>
 
 <style lang="scss">
-  * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
-  #app {
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    font-size: 24px;
-    height: 100vh;
-    background-color: #FFE0B2;
-  }
-  .flex-center {
-    display: flex;
-    justify-content: center;
+
+  .footer{
+    font-size: 15px;
   }
 
-  // Auth Pages
-  label {
-    display: block;
-    margin-bottom: 4px;
-  }
-  .login-heading {
-    margin-bottom: 16px;
-  }
-  .form-control {
-    margin-bottom: 24px;
-  }
-  .mb-more {
-    margin-bottom: 42px;
-  }
-  .login-form {
-    max-width: 500px;
-    margin: auto;
-  }
-  .login-input {
-    width: 100%;
-    font-size: 16px;
-    padding: 12px 16px;
-    outline: 0;
-    border-radius: 3px;
-    border: 1px solid lightgrey;
-  }
-  .btn-submit {
-    width: 100%;
-    padding: 14px 12px;
-    font-size: 18px;
-    font-weight: bold;
-    background: #60BD4F;
-    color: white;
-    border-radius: 3px;
-    cursor: pointer;
-    &:hover {
-      background: darken(#60BD4F, 10%);
-    }
-  }
 </style>

@@ -1,66 +1,61 @@
 <template>
-	<v-app id="inspire">
-    <v-content>
-      <v-container class="fill-height" fluid>
-        <v-row align="center" justify="center">
-          <v-col cols="12" sm="8" md="4">
-            <v-card class="elevation-12">
-              <v-toolbar color="primary" dark flat>
-                <v-toolbar-title>Edit Profile</v-toolbar-title>
-                <v-spacer />
-              </v-toolbar>
-              <v-card-text>
-                <v-form id="check-login-form">
-                  <v-text-field
-                    id="name"
-                    label="Name"
-                    name="name"
-                    type="name"
-                    v-model="name"
-                  />
-                  <v-text-field
-                    id="password"
-                    label="New Password"
-                    name="password"
-                    type="password"
-                  /> 
-                  <!-- // -->
-                   <v-text-field
-                    id="nif"
-                    label="NIF"
-                    name="nif"
-                    type="text"
-                    v-model="nif"
-                  />
-                <br>
-                <div class="form-control mb-more">
-                    <!-- <label for="photo">PHOTO</label> -->
-                    <div>
-                      <img :src="imageUrl" height="150" weight="150">
-                    </div>
-                    <div>
-                      <v-btn small color="error" @click="onPickFile">Upload Image</v-btn>
-                      <input 
-                        type="file"
-                        style="display: none"
-                        ref="fileInput"
-                        accept="image/*"
-                        @change="onFilePicked"
-                        >  
-                    </div>
-                </div>
-                </v-form>
-              </v-card-text>
-              <v-card-actions>
-                <v-spacer />
-                <v-btn color="primary" form="check-login-form" @click.prevent="save">Submit</v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-col>
-        </v-row>
-      </v-container>
-    </v-content>
-  </v-app>
+  <v-card class="elevation-12 card">
+    <v-toolbar color="blue-grey darken-4" flat>
+      <v-toolbar-title>Edit Profile</v-toolbar-title>
+    </v-toolbar>
+    <v-card-text background-color="dark">
+      <v-form id="check-login-form">
+        <v-text-field
+          color="blue-grey darken-1"
+          background-color="dark"
+          id="name"
+          label="Name"
+          name="name"
+          type="name"
+          v-model="name"
+        />
+        <v-text-field
+          color="blue-grey darken-1"
+          background-color="dark"
+          id="password"
+          label="New Password"
+          name="password"
+          type="password"
+        /> 
+        <v-text-field
+          color="blue-grey darken-1"
+          background-color="dark"
+          id="nif"
+          label="NIF"
+          name="nif"
+          type="text"
+          v-model="nif"
+        />
+        <br>
+        <div class="form-control mb-more">
+          <div>
+            <img :src="imageUrl" height="150" width="150">
+          </div>
+          <div>
+            <v-btn small class="mx-1" fab dark color="indigo" @click="onPickFile">
+              <v-icon>mdi-plus</v-icon>
+            </v-btn>
+            <input 
+              type="file"
+              style="display: none"
+              ref="fileInput"
+              accept="image/*"
+              @change="onFilePicked"
+            >  
+          </div>
+        </div>
+      </v-form>
+    </v-card-text>
+    <v-card-actions class="justify-center">
+      <v-spacer />
+      <v-btn block  color="blue-grey darken-1" form="check-login-form" @click.prevent="save">Submit</v-btn>
+    </v-card-actions>
+  </v-card>
 </template>
 
 <script>
@@ -114,3 +109,18 @@
   		}
 	};
 </script>
+
+<style lang="scss" scoped>
+
+  .card{
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		margin-right: -50%;
+		transform: translate(-50%, -50%);
+    width: 500px;
+  }
+
+  
+
+</style>

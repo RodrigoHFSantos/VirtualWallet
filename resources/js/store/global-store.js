@@ -9,7 +9,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
     state: {
         token: "",
-        user: null
+        user: JSON.parse(sessionStorage.getItem('user'))
     },
     getters: {
         loggedIn(state) {

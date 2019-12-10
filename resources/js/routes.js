@@ -30,7 +30,10 @@ const routes = [
     { 
         path: '/',
         name: 'home',
-        component: landingpage
+        component: landingpage,
+        meta: {
+            requiresVisitor: true,
+        }
     },
 
     {
@@ -78,6 +81,9 @@ const routes = [
         path: '/wallet/me',
         name: 'wallet',
         component: wallet,
+        meta: {
+            requiresAuth: true,
+        }
     },
 ]
 
