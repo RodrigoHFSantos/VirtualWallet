@@ -152,4 +152,17 @@ const alpha = helpers.regex('alpha', /^[a-zA-Z ]*$/);
     		}
   		}
 	}
+
 </script>
+
+<style lang="scss" scoped>
+
+  .card{
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		margin-right: -50%;
+		transform: translate(-50%, -50%);
+    width: 500px;
+  }
+</style>

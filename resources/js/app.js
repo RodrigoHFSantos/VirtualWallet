@@ -33,7 +33,7 @@ router.beforeEach((to, from, next) => {
     } else if (to.matched.some(record => record.meta.requiresVisitor)) {
       if (store.getters.loggedIn) {
         next({
-          name: 'home',
+          name: 'wallet',
         })
       } else {
         next()

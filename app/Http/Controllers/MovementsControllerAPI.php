@@ -5,9 +5,34 @@ namespace App\Http\Controllers;
 use App\Movement;
 use App\Wallet;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
-class MovementControllerAPI extends Controller
+class MovementsControllerAPI extends Controller
 {
+
+    public function userMovements(){
+
+        $user = Auth::user(); 
+
+        $wallet = Wallet::where('email', $user->email)->first();
+
+        $movements = Movement::where('wallet_id', $wallet->id)
+        ->join('categories', 'movements.category_id', '=', 'categories.id')
+        ->leftJoin('wallets', 'movements.transfer_wallet_id', '=', 'wallets.id')
+        ->orderBy('movements.date', 'desc')
+        ->select('movements.*', 'wallets.email AS transfer_wallet', 'categories.name AS category_name')
+        ->get();
+    
+        return $movements;
+    }
+    
+
+
+
+
+
+
     public function register(Request $request)
     {   
         $wallet = Wallet::where('email', $request->email)->first();

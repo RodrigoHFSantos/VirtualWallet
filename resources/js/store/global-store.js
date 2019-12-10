@@ -9,11 +9,20 @@ Vue.use(Vuex);
 export default new Vuex.Store({
     state: {
         token: "",
-        user: null
+        user: JSON.parse(sessionStorage.getItem('user'))
     },
     getters: {
         loggedIn(state) {
             return state.token !== "";
+        },
+        isAdmin(state){
+            return state.user!=null && state.user.type=="a";
+        },
+        isOperator(state){
+            return state.user!=null && state.user.type=="o";
+        },
+        isUser(state){
+            return state.user!=null && state.user.type=="u";
         }
     },
     mutations: {

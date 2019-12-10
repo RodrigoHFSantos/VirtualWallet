@@ -20,13 +20,20 @@ const editprofile = Vue.component('editprofile', EditProfileComponent);
 import OperatorIncomeMovementComponent from './components/movements/operator/RegisterIncome.vue';
 const operatorMovementIncome = Vue.component('operatorIncomeMovement', OperatorIncomeMovementComponent);
 
+import MovementsListComponent from './components/movements/auth_user/MovementsList.vue';
+const movementsList = Vue.component('movementsList', MovementsListComponent);
 
+import WalletComponent from './components/wallet/Wallet.vue';
+const wallet = Vue.component('wallet', WalletComponent);
 
 const routes = [
     { 
         path: '/',
         name: 'home',
-        component: landingpage
+        component: landingpage,
+        meta: {
+            requiresVisitor: true,
+        }
     },
 
     {
@@ -63,6 +70,20 @@ const routes = [
         path: '/operator/movements/register-income',
         name: 'operator-movement-income',
         component: operatorMovementIncome
+    },
+
+    {
+        path: '/wallet/movements/me',
+        name: 'movementsList',
+        component: movementsList,
+    },
+    {
+        path: '/wallet/me',
+        name: 'wallet',
+        component: wallet,
+        meta: {
+            requiresAuth: true,
+        }
     },
 ]
 

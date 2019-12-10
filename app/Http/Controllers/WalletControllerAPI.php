@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Wallet;
 use App\Http\Resources\WalletResource;
 use App\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class WalletControllerAPI extends Controller
 {
@@ -26,5 +28,16 @@ class WalletControllerAPI extends Controller
     public function totalWallets()
     {
         return Wallet::count();
+    }
+
+    public function currentBalance(){
+
+        $user = Auth::user(); 
+
+        $wallet = Wallet::where('email', $user->email)->first();
+
+        $currentBalance = $wallet->balance;
+
+        return $currentBalance;
     }
 }
