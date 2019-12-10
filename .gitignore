@@ -10,3 +10,6 @@ Homestead.json
 Homestead.yaml
 npm-debug.log
 yarn-error.log
+public/js/app.js
+plugins/vuetify.js
+public/mix-manifest.json

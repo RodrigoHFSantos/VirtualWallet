@@ -11,8 +11,10 @@ import vuetify from '../../plugins/vuetify'; // path to vuetify export
 import VueRouter from 'vue-router';
 import routes from './routes';
 import store from './store/global-store';
+import Vuelidate from 'vuelidate';
 
 Vue.use(VueRouter);
+Vue.use(Vuelidate);
 
 const router = new VueRouter({
     routes,

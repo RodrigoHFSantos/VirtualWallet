@@ -43,7 +43,6 @@
                   />
                 <br>
                 <div class="form-control mb-more">
-                    <label for="photo">PHOTO</label>
                     <div>
                       <img :src="imageUrl" height="150">
                     </div>
@@ -118,17 +117,15 @@ export default {
         this.$refs.fileInput.click();
       },
       onFilePicked (event) {
-        const files = event.target.files
-        let filename = files[0].name
-        if(filename.lastIndexOf('.') <= 0){
-          return alert("Please add a valid file!!")
+        console.log(event.target.files[0]);
+        let photo = event.target.files[0];
+        var fileReader = new FileReader();
+        fileReader.readAsDataURL(event.target.files[0])
+        fileReader.onload = (event) =>{
+          console.log(event.target.result)
+          this.photo = event.target.result;
+          this.imageUrl = event.target.result;
         }
-        const fileReader = new FileReader()
-        fileReader.addEventListener('load', () => {
-        this.imageUrl = fileReader.result
-        })
-      fileReader.readAsDataURL(files[0])
-      this.photo = filename
     }
   }
 };

@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\UserResource;
-use Illuminate\Http\Request;
 use App\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
 
 class UserControllerAPI extends Controller
 {
@@ -15,18 +17,43 @@ class UserControllerAPI extends Controller
 
     public function editprofile(Request $request)
     {
+        if (!is_null($request->photo)) {
+           $exploded = explode(',', $request->photo);
+            $decoded = base64_decode($exploded[1]);
+
+            if (strpos($exploded[0], 'jpeg')) {
+                $extension = 'jpg';
+            }else{
+                $extension = 'png';
+            } 
+            
+            $str=rand(0, 10000); 
+            
+            $filename = $str.'.'.$extension;
+
+            $path = 'storage/fotos/'.$filename;
+
+            file_put_contents($path, $decoded);
+
+            User::where('id', $request->id)->update([
+                'photo' => $filename
+            ]);
+        }
+    	
+
     	$request->validate([
-            'name' => 'string|max:255',
-            //'password' => 'required|string|min:3',
-            // 'password_confirmation' => 'required|confirmed',
+            'name' => 'required|string|max:255',
+            'password' => 'required|string|min:3',
             'nif' => 'nullable|digits:9'
         ]);
 
-        return User::where('id', $request->id)->update([
-        	'name' => $request->name,
-            //'password' => Hash::make($request->password),
+        User::where('id', $request->id)->update([
+            'name' => $request->name,
+            'password' => Hash::make($request->password),
             'nif' => $request->nif
-            //'photo' => $request->photo
         ]);
+
+        return User::where('id', $request->id)->first();
+
 	}
 }

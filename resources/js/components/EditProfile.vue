@@ -10,31 +10,47 @@
                 <v-spacer />
               </v-toolbar>
               <v-card-text>
-                <v-form id="check-login-form">
+                <v-form id="formEdit" enctype='multipart/form-data' v-model="valid" lazy-validation>
                   <v-text-field
                     id="name"
                     label="Name"
                     name="name"
                     type="name"
                     v-model="name"
+                    :rules="[v => !!v || 'Name is required', $v.name.alpha || 'Name can only contain alphabet characters']"
                   />
                   <v-text-field
                     id="password"
                     label="New Password"
                     name="password"
-                    type="password"
+                    ref="password"
+                    :type="show1 ? 'text' : 'password'"
+                    :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+                    @click:append="show1 = !show1"
+                    v-model.trim="$v.password.$model"
+                    :rules="[$v.password.required || 'Password is required']"
                   /> 
-                  <!-- // -->
-                   <v-text-field
+                  <v-text-field
+                    id="confPassword"
+                    label="Confirm Password"
+                    name="confPassword"
+                    type="password"
+                    :type="show2 ? 'text' : 'password'"
+                    :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
+                    @click:append="show2 = !show2"
+                    v-model.trim="$v.confpassword.$model"
+                    :rules="[$v.confpassword.required || 'Passwords must be identical', $v.confpassword.sameAsPassword || 'Passwords must be identical']"
+                  /> 
+                  <v-text-field
                     id="nif"
                     label="NIF"
                     name="nif"
                     type="text"
-                    v-model="nif"
+                    v-model.trim="$v.nif.$model"
+                    :rules="[$v.nif.required|| 'Nif required!', $v.nif.numeric|| 'Nif can only have digits!', $v.nif.minLength || 'Nif must have exactly 9 digits!', $v.nif.maxLength || 'Nif must have exactly 9 digits!']"
                   />
                 <br>
                 <div class="form-control mb-more">
-                    <!-- <label for="photo">PHOTO</label> -->
                     <div>
                       <img :src="imageUrl" height="150" weight="150">
                     </div>
@@ -53,7 +69,7 @@
               </v-card-text>
               <v-card-actions>
                 <v-spacer />
-                <v-btn color="primary" form="check-login-form" @click.prevent="save">Submit</v-btn>
+                <v-btn color="success" form="formEdit" @click.prevent="save" :disabled="!valid">Submit</v-btn>
               </v-card-actions>
             </v-card>
           </v-col>
@@ -64,18 +80,23 @@
 </template>
 
 <script>
+import { required, sameAs, minLength, maxLength, numeric, helpers } from 'vuelidate/lib/validators';
+const alpha = helpers.regex('alpha', /^[a-zA-Z ]*$/);
 	export default{
 		name:'editprofile',
 		data: function() {
 		    return {
-		    	id: this.$store.state.user.id,
-		    	name: this.$store.state.user.name,
-			    password: '',
-			    //password_confirmation: '',
-			    nif: this.$store.state.user.nif,
-			    imageUrl: 'storage/fotos/' + this.$store.state.user.photo,
-			    imageData: '',
-			    image: null,
+		    	show1: false,
+		    	show2: false,
+		    	valid: false,
+			    id: this.$store.state.user.id,
+			    name: this.$store.state.user.name,
+				password: '',
+				confpassword: '',
+				nif: this.$store.state.user.nif,
+				imageUrl: 'storage/fotos/' + this.$store.state.user.photo,
+				photo: '',
+				
 		    }
 		},
 		methods: {
@@ -83,34 +104,52 @@
     		  this.$refs.fileInput.click();
     		},
     		onFilePicked (event) {
-    		  const files = event.target.files
-    		  let filename = files[0].name
-    		  if(filename.lastIndexOf('.') <= 0){
-    		    return alert("Please add a valid file!!")
-    		  }
-    		  const fileReader = new FileReader()
-    		  fileReader.addEventListener('load', () => {
-    		  this.imageUrl = fileReader.result
-    		  })
-    		fileReader.readAsDataURL(files[0])
-    		this.photo = filename
+    			console.log(event.target.files[0]);
+    			let photo = event.target.files[0];
+	    		var fileReader = new FileReader();
+	    		fileReader.readAsDataURL(event.target.files[0])
+	    		fileReader.onload = (event) =>{
+	    			console.log(event.target.result)
+	    			this.photo = event.target.result;
+	    			this.imageUrl = event.target.result;
+	    		}
     		},
+
+
     		save: function() {
-    	    	axios.put('api/users/me', {
-    	    		id: this.$store.state.user.id,
-    	    		name: this.name,
-    	    	   	password: this.password,
-    	    	   	nif: this.nif
-    	    	   	//photo: response.data.photo,
+    	    	axios.put('api/users/me',{
+    	    		id: this.id,
+			    	name: this.name,
+					password: this.password,
+					nif: this.nif,
+					photo: this.photo
     	    	})
     	    	.then(response => {
-    	    		console.log(response);
-    	    		this.$store.state.user.name = this.name;
-    	    		this.$router.push({name: 'home'})
+    	    		console.log(response.data);
+    	    		this.$store.commit("setUser", response.data);
+    	    		this.$router.push({name: 'home'});
     	    	}).catch(error =>{
     	    		console.log(error);
     	    	})
-    	  	},
+    	  	}
+  		},
+  		validations: {
+	   		password: {
+	   		  required,
+	   		},
+   			confpassword: {
+   				required,
+     			sameAsPassword: sameAs('password')
+    		},
+    		nif:{
+    			required,
+    			numeric,
+    			minLength: minLength(9),
+    			maxLength: maxLength(9),
+    		},
+    		name:{
+    			alpha
+    		}
   		}
-	};
+	}
 </script>
