@@ -17,14 +17,16 @@ class MovementsControllerAPI extends Controller
 
         $wallet = Wallet::where('email', $user->email)->first();
 
-        $movements = Movement::where('wallet_id', $wallet->id)
+        $query = Movement::where('wallet_id', $wallet->id)
         ->join('categories', 'movements.category_id', '=', 'categories.id')
         ->leftJoin('wallets', 'movements.transfer_wallet_id', '=', 'wallets.id')
         ->orderBy('movements.date', 'desc')
-        ->select('movements.*', 'wallets.email AS transfer_wallet', 'categories.name AS category_name')
-        ->get();
-    
-        return $movements;
+        ->select('movements.*', 'wallets.email AS transfer_wallet', 'categories.name AS category_name')->get();
+
+        //$movements = $query->paginate(10);
+
+        // dd($movements);
+        return $query;
     }
     
 
@@ -59,12 +61,5 @@ class MovementsControllerAPI extends Controller
             return response()->json(['message' => 'Não existe uma wallet com este email!'], 404);
         }
         
-        // $request->validate([
-        //     'email' => 'required|string|email|max:255',
-        //     'value' => 'required|digits|min:1',
-        //     'typeOfPayment' => 'required|digits:9',
-        //     'iban' => 'string|max:25',
-        //     'description' => 'required|string'
-        // ]);
     }
 }

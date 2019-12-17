@@ -2,7 +2,7 @@
 <template>
   <v-card
     class="mx-auto card"
-	height="500px"
+	height="450px"
   >
     <v-img
       class="white--text"
@@ -14,9 +14,9 @@
 	<v-card-title class="cardTitle justify-center">Wallet Details</v-card-title>
 
     <v-card-text class="text--primary">
-		<div>Username: {{name}}</div>
-		<div>Email: {{email}}</div>
-		<div>{{currentBalance}}€</div>
+		<div><label class="label">Username:</label>	{{name}}</div>
+		<div><label class="label">Email: </label>{{email}}</div>
+		<div class="flexBalance">{{currentBalance}}€</div>
     </v-card-text>
     <v-card-actions class="justify-center flexcard">
       <v-btn block  color="blue-grey darken-1" to="/wallet/movements/me">Movements</v-btn>
@@ -70,4 +70,17 @@
 		bottom: 0;
 		width: 100%;
 	}
+
+	.flexBalance{
+		position: absolute;
+		bottom: 15%;
+		right: 10%;
+		font-size: 20px;
+	}
+
+	.label{
+		font-size: 20px;
+	}
+
+	
 	</style>

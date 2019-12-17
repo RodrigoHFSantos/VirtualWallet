@@ -26,6 +26,10 @@ const movementsList = Vue.component('movementsList', MovementsListComponent);
 import WalletComponent from './components/wallet/Wallet.vue';
 const wallet = Vue.component('wallet', WalletComponent);
 
+
+// import MovementsDetailsComponent from './components/movements/auth_user/MovementDetails.vue';
+// const details = Vue.component('details', MovementsDetailsComponent);
+
 const routes = [
     { 
         path: '/',
@@ -85,6 +89,11 @@ const routes = [
             requiresAuth: true,
         }
     },
+    // {
+    //     path: '/wallet/movements/details',
+    //     name: 'details',
+    //     component: details,
+    // },
 ]
 
 export default routes
