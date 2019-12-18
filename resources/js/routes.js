@@ -17,14 +17,21 @@ const about = Vue.component('about', AboutComponent);
 
 import EditProfileComponent from './components/EditProfile.vue';
 const editprofile = Vue.component('editprofile', EditProfileComponent);
+
 import OperatorIncomeMovementComponent from './components/movements/operator/RegisterIncome.vue';
 const operatorMovementIncome = Vue.component('operatorIncomeMovement', OperatorIncomeMovementComponent);
 
 import MovementsListComponent from './components/movements/auth_user/MovementsList.vue';
 const movementsList = Vue.component('movementsList', MovementsListComponent);
+import UserFilterMovementComponent from './components/movements/user/UserFilterMovement.vue';
+const userFilterMovements = Vue.component('userFilterMovements', UserFilterMovementComponent);
 
 import WalletComponent from './components/wallet/Wallet.vue';
 const wallet = Vue.component('wallet', WalletComponent);
+
+import UserRegisterExpenseComponent from './components/movements/user/UserExpenseMovement.vue';
+const userRegisterExpense = Vue.component('userRegisterExpense', UserRegisterExpenseComponent);
+
 
 
 // import MovementsDetailsComponent from './components/movements/auth_user/MovementDetails.vue';
@@ -73,7 +80,10 @@ const routes = [
     {
         path: '/operator/movements/register-income',
         name: 'operator-movement-income',
-        component: operatorMovementIncome
+        component: operatorMovementIncome,
+        meta: {
+            requiresOperator: true,
+        }
     },
 
     {
@@ -94,6 +104,15 @@ const routes = [
     //     name: 'details',
     //     component: details,
     // },
+
+    {
+        path: '/user/movements/register-expense',
+        name: 'user-movements-register-expense',
+        component: userRegisterExpense,
+        meta: {
+            requiresUser: true,
+        }
+    }
 ]
 
 export default routes

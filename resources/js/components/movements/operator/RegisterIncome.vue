@@ -105,9 +105,15 @@
         registerIncome: function() {
             this.errors = [];
             if(this.checkForm()){
-                axios.post('api/movements/register', this.data)
+                axios.post('api/movements/register/income', this.data)
                 .then(response => {
                     console.log(response);
+                    this.data.email = '';
+                    this.data.value = '';
+                    this.data.type_payment = '';
+                    this.data.source_description = '';
+                    this.data.iban = '';
+                    // this.$router.push({ name: "home" });
                 })
                 .catch(error => {
                     console.log(error.response.data.message);

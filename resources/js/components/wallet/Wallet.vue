@@ -19,22 +19,37 @@
 		<div class="flexBalance">{{currentBalance}}€</div>
     </v-card-text>
     <v-card-actions class="justify-center flexcard">
-      <v-btn block  color="blue-grey darken-1" to="/wallet/movements/me">Movements</v-btn>
+		<v-col>
+			<v-flex>
+				<v-btn block  color="blue-grey darken-1" to="/wallet/movements/me">Movements</v-btn>
+			</v-flex>
+		</v-col>
+		<v-col>
+			<v-flex>
+      			<UserExpenseMovement :activator="activator" @registed="movementRegisted"/>
+    		</v-flex>
+		</v-col>
     </v-card-actions>
   </v-card>
 </template>
 
 <script>
+import UserExpenseMovement from "../movements/user/UserExpenseMovement.vue";
 	export default{
+		components: {UserExpenseMovement},
 		data: function(){
 			return{
 				currentBalance: null,
 				email: this.$store.state.user.email,
 				name: this.$store.state.user.name,
+				activator: "",
 			}
 		},
 
 		methods:{
+			movementRegisted: function(value){
+				this.$router.push({ name: "movementsList" });
+			},
 			getCurrentBalance:function () {
 				axios.get('api/wallet/me')
 					.then(response=>{

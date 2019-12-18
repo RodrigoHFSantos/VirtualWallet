@@ -89,6 +89,9 @@ export default {
      },
      isOperator: function(){
        return this.$store.getters.isOperator;
+     },
+     isUser: function(){
+       return this.$store.getters.isUser;
      }
    },
    methods: {

@@ -12,6 +12,11 @@ import VueRouter from 'vue-router';
 import routes from './routes';
 import store from './store/global-store';
 import Vuelidate from 'vuelidate';
+import VCalendar from 'v-calendar';
+
+Vue.use(
+    VCalendar, {componentPrefix: 'vc'},
+);
 
 Vue.use(VueRouter);
 Vue.use(Vuelidate);
@@ -21,9 +26,11 @@ const router = new VueRouter({
     // history = true //era suposto tirar o # do url mas nao funciona
 })
 
+
 router.beforeEach((to, from, next) => {
     if (to.matched.some(record => record.meta.requiresAuth)) {
       if (!store.getters.loggedIn) {
+        console.log(store.state.token);
         next({
           name: 'login',
         })
@@ -38,6 +45,22 @@ router.beforeEach((to, from, next) => {
       } else {
         next()
       }
+    } else if (to.matched.some(record => record.meta.requiresOperator)) {
+      if (!store.getters.isOperator) {
+        next({
+          name: 'home',
+        })
+      } else {
+        next()
+      } 
+    } else if (to.matched.some(record => record.meta.requiresUser)) {
+      if (!store.getters.isUser) {
+        next({
+          name: 'home',
+        })
+      } else {
+        next()
+      } 
     } else {
       next()
     }

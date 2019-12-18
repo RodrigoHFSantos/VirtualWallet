@@ -6,15 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
-    use Enums;
+    // use Enums;
     
     protected $table = 'categories';
 
-    //não sei se está correto
-    protected $enumTypes = [
-        'e', //expense category
-        'i', //income category
-    ];
+    // //não sei se está correto
+    // protected $enumTypes = [
+    //     'e', //expense category
+    //     'i', //income category
+    // ];
 
     protected $fillable = [
         'name',
