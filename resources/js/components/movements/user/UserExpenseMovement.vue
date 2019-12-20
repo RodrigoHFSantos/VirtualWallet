@@ -5,7 +5,7 @@
         <template v-slot:activator="{ on }">
           <v-flex>
             <v-btn v-if="routeWalletMe" block color="blue-grey darken-1" v-on="on">Register Expense</v-btn>
-            <v-btn v-if="routeMovementList" color="orange" dark v-on="on">Register Expense</v-btn>
+            <v-btn v-if="routeMovementList" small class="mx-1" dark color="blue-grey darken-1" v-on="on">Register Expense</v-btn>
           </v-flex>
         </template>
         <v-card>

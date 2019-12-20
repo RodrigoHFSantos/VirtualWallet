@@ -3,12 +3,10 @@
     <div class="title pt-6 pb-6">
       <h1>Movements</h1>
     </div>
-    <v-flex>
-      <UserFilterMovements :activator="activator" @clicked="movementsFiltered" />
-    </v-flex>
-    <v-flex>
-      <UserExpenseMovement :activator="activator" @registed="movementRegisted"/>
-    </v-flex>
+    <div class="row ml-8">
+        <UserFilterMovements :activator="activator" @clicked="movementsFiltered" />
+        <UserExpenseMovement :activator="activator" @registed="movementRegisted"/>
+    </div>
     <v-flex v-if="isMovementsFiltered">
       <v-btn color="red" dark @click="clearMovementsFiltered">Clear Filter</v-btn>
     </v-flex>
@@ -16,45 +14,30 @@
       {{ noFilterAlert.text }}
       <v-btn color="red" text @click="noFilterAlert.value = false">Close</v-btn>
     </v-snackbar>
-    <v-simple-table class="ml-8 mr-8">
-      <template v-slot:default>
-        <thead>
-          <tr class="text-left">
-            <th>ID</th>
-            <th>Type</th>
-            <th>Transfer Email</th>
-            <th>Type of Payment</th>
-            <th>Category</th>
-            <th>Date</th>
-            <th>Start Balance</th>
-            <th>End Balance</th>
-            <th>Value</th>
-            <!-- <th>Actions</th> -->
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="movement in movements" :key="movement.id">
-            <td>{{movement.id}}</td>
-            <td v-if="movement.type === 'e'">expence</td>
-            <td v-else-if="movement.type === 'i'">income</td>
-            <td v-if="movement.transfer_wallet === null">------</td>
-            <td v-else>{{movement.transfer_wallet}}</td>
-            <td v-if="movement.type_payment === 'c'">cash</td>
-            <td v-else-if="movement.type_payment === 'bt'">bank transfer</td>
-            <td v-else-if="movement.type_payment === 'mb'">MB payment</td>
-            <td v-else-if="movement.type_payment === null">------</td>
-            <td>{{movement.category_name}}</td>
-            <td>{{movement.date}}</td>
-            <td>{{movement.start_balance}}</td>
-            <td>{{movement.end_balance}}</td>
-            <td>{{movement.value}}</td>
-            <!-- <td>
-              <MovementDetails :movement="movement" />
-            </td> -->
-          </tr>
-        </tbody>
+      <v-data-table
+        :headers="headers"
+        :items="movements"
+        :items-per-page="10"
+        class="elevation-1 ml-8 mt-4 mr-8 mb-8"
+      >
+      <template #item.type="{item}">
+        <div v-if="item.type === 'e'">Expence</div>
+        <div v-else>Income</div>
       </template>
-    </v-simple-table>
+      <template #item.transfer_wallet="{item}">
+        <div v-if="item.transfer_wallet === null">-----</div>
+        <div v-else>{{item.transfer_wallet}}</div>
+      </template>
+      <template #item.type_payment="{item}">
+        <div v-if="item.type_payment === 'c'">Cash</div>
+        <div v-else-if="item.type_payment === 'bt'">Bank transfer</div>
+        <div v-else-if="item.type_payment === 'mb'">MB payment</div>
+        <div v-else>-----</div>
+      </template>
+      <template #item.actions="{item}">
+        <MovementDetails :movement="item" />
+      </template>
+      </v-data-table>
   </div>
 </template>
 
@@ -72,7 +55,25 @@ export default {
       noFilterAlert: {
         value: false,
         text: "Não à movimentos para esses filtros"
-      }
+      },
+      headers: [
+          {
+            text: 'ID',
+            align: 'left',
+            sortable: false,
+            value: 'id',
+          },
+          // { text: 'Calories'}, value: 'calories' },
+          { text: 'Type', value: 'type'},
+          { text: 'Transfer Email', value: 'transfer_wallet'},
+          { text: 'Type of Payment',value: 'type_payment'},
+          { text: 'Category', value:'category_name'},
+          { text: 'Date', value:'date'},
+          { text: 'Start Balance', value:'start_balance'},
+          { text: 'End Balance', value:'end_balance'},
+          { text: 'Value', value:'value'},
+          {text: 'Actions', value: 'actions'},
+        ],
     };
   },
   methods: {

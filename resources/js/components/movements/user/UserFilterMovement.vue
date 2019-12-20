@@ -4,7 +4,7 @@
       <v-dialog v-model="dialog" width="700px">
         <template v-slot:activator="{ on }">
           <v-flex>
-            <v-btn color="green" dark v-on="on" @click.stop="dialog=true">Filter Movements</v-btn>
+            <v-btn small class="mx-1" dark color="indigo" v-on="on" @click.stop="dialog=true">Filter Movements</v-btn>
           </v-flex>
         </template>
         <v-card>
