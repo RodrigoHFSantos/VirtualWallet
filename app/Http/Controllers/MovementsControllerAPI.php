@@ -20,21 +20,28 @@ class MovementsControllerAPI extends Controller
         $transfer = 0;
         $wallet_transfer_id = $request->email_destination; //para a variavel ficar a null visto que nao é transfer
         if($request->input('type_movement_selected') === 'Transfer'){
-            if(Wallet::where('email', $request->email_destination)->first()){
+            $wallet_transfer = Wallet::where('email', $request->email_destination)->first();
+            if($wallet_transfer != null){
                 $transfer = 1;
-                $wallet_transfer = Wallet::where('email', $request->email_destination)->first();
                 $wallet_transfer_id =  $wallet_transfer->id;
+            }else{
+                return response()->json(['message' => 'Não existe uma wallet com este email!'], 404);
             }
-            return response()->json(['message' => 'Não existe uma wallet com este email!'], 404);
         }
 
         $payment_type = $request->input('movement_payment_type_selected');
         if($request->has('movement_payment_type_selected') && $request->input('movement_payment_type_selected') !== 'null'){
             if($request->input('movement_payment_type_selected') === 'Bank Transfer'){
                 $payment_type = 'bt';
+                $request->merge([
+                    'movement_payment_type_selected' => $payment_type,
+                ]);
             }
             if($request->input('movement_payment_type_selected') === 'Multibanco/MB payment'){
                 $payment_type = 'mb';
+                $request->merge([
+                    'movement_payment_type_selected' => $payment_type,
+                ]);
             }
         }
         
@@ -48,7 +55,7 @@ class MovementsControllerAPI extends Controller
                 'value' => $request->value,
                 'category_id' => $category->id,
                 'description' => $request->description,
-                'type_payment' => $payment_type,
+                'type_payment' => $request->movement_payment_type_selected,
                 'iban' => $request->iban,
                 'mb_entity_code' => $request->mb_code,
                 'mb_payment_reference' => $request->mb_reference,
@@ -60,12 +67,48 @@ class MovementsControllerAPI extends Controller
             $wallet_balance = $wallet->balance - $request->value;
             Wallet::where('email', $wallet->email)->update(['balance' => $wallet_balance]);
             if($transfer === 1){
-                $wallet_transfer_balance = $wallet_transfer->balance + $request->value;
-                Wallet::where('email', $request->email_destination)->update(['balance' => $wallet_transfer_balance]);
+                $this->registerIncome($request);
             }
         }else{
             return response()->json(['message' => 'Não existe uma wallet com este email!'], 404);
         }
+    }
+
+    public function registerIncome(Request $request)
+    {   
+        if($request->has('email_destination')){
+            $wallet = Wallet::where('email', $request->email_destination)->first();
+            $transfer = 1;
+            $wallet_transfer = Wallet::where('email', $request->senderEmail)->first();
+            $wallet_transfer_id = $wallet_transfer->id;
+        }else{
+            $wallet = Wallet::where('email', $request->email)->first();
+            $transfer = 0;
+            $wallet_transfer_id = Wallet::where('email', $request->senderEmail)->first();
+        }
+
+        if($wallet){
+            $movement = Movement::create([
+                'wallet_id' => $wallet->id,
+                'type' => 'i',
+                'transfer' => $transfer,
+                'value' => $request->value,
+                'type_payment' => $request->movement_payment_type_selected,
+                'iban' => $request->iban,   
+                'mb_entity_code' => $request->mb_code,
+                'mb_payment_reference' => $request->mb_reference,
+                'transfer_wallet_id' => $wallet_transfer_id,
+                'source_description' => $request->source_description,
+                'start_balance' => $wallet->balance,
+                'end_balance' => $wallet->balance + $request->value,
+            ]);
+            $wallet->balance += $request->value;
+            $wallet->save();
+            return $movement;
+        }else{
+            return response()->json(['message' => 'Não existe uma wallet com este email!'], 404);
+        }
+        
     }
 
     public function emailsFromMyMovements()
@@ -83,8 +126,8 @@ class MovementsControllerAPI extends Controller
         return $ids;
     }
 
-    public function userMovements(){
-
+    public function userMovements()
+    {
         $user = Auth::user(); 
         $wallet = Wallet::where('email', $user->email)->first();
         $movements = Movement::where('wallet_id', $wallet->id)
@@ -92,53 +135,14 @@ class MovementsControllerAPI extends Controller
         ->leftJoin('wallets', 'movements.transfer_wallet_id', '=', 'wallets.id')
         ->orderBy('movements.date', 'desc')
         ->select('movements.*', 'wallets.email AS transfer_wallet', 'categories.name AS category_name')->get();
-
-        //$movements = $query->paginate(10);
-
-        // dd($movements);
         return $movements;
     }
     
-    public function registerIncome(Request $request)
-    {   
-        $wallet = Wallet::where('email', $request->email)->first();
-
-        if($wallet){
-            $movement = Movement::create([
-                'wallet_id' => $wallet->id,
-                'type' => 'i',
-                'transfer' => 0,
-                'value' => $request->value,
-                'type_payment' => $request->type_payment,
-                'source_description' => $request->source_description,
-                'iban' => $request->iban,
-                'start_balance' => $wallet->balance,
-                'end_balance' => $wallet->balance + $request->value,
-            ]);
-
-            $wallet->balance += $request->value;
-            $wallet->save();
-
-            return $movement;
-
-        }else{
-            return response()->json(['message' => 'Não existe uma wallet com este email!'], 404);
-        }
-        
-    }
-
      public function filterUserMovements(Request $request)
     {
         $user = Auth::user(); 
         $wallet = Wallet::where('email', $user->email)->first();
-        // $movements_filtered = Movement::where('wallet_id', $wallet->id);
         $movements_filtered =  $this->userMovements();
-
-        // dd($request);
-        // if($request){
-        //     dd("yah");
-        // }
-
         // Search for a movement based on their id.
         if ($request->input('id') != null) {
             $movements_filtered = $movements_filtered->where('id', $request->input('id'));

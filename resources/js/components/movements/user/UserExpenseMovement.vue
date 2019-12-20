@@ -115,6 +115,7 @@ export default {
     return {
       dialog: false,
       data: {
+        senderEmail: this.$store.state.user.email,
         value: "",
         movement_payment_type_selected: "",
         category_selected: "",
