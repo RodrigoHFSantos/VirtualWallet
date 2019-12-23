@@ -13,7 +13,6 @@ class WalletControllerAPI extends Controller
 {
     public function create(Request $request)
     {
-
         return Wallet::create([
             'id' => User::where('email', $request->email)->value('id'),
             'email' => $request->email,
@@ -30,14 +29,11 @@ class WalletControllerAPI extends Controller
         return Wallet::count();
     }
 
-    public function currentBalance(){
-
+    public function currentBalance()
+    {
         $user = Auth::user(); 
-
         $wallet = Wallet::where('email', $user->email)->first();
-
         $currentBalance = $wallet->balance;
-
         return $currentBalance;
     }
 }

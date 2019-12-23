@@ -25,7 +25,7 @@ Route::middleware('auth:api')->post('logout','LoginControllerAPI@logout');
 //Routes for WalletControllerAPI
 Route::middleware('auth:api')->get('wallets', 'WalletControllerAPI@index');
 Route::get('wallets/total', 'WalletControllerAPI@totalWallets');
-Route::middleware('auth:api')->post('wallets/create', 'WalletControllerAPI@create');
+Route::post('wallets/create', 'WalletControllerAPI@create');
 
 
 //Routes for Users

@@ -2177,6 +2177,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2381,6 +2389,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'register',
   data: function data() {
@@ -2389,29 +2407,51 @@ __webpack_require__.r(__webpack_exports__);
       email: '',
       password: '',
       nif: '',
-      // photo: '',
       imageData: '',
       imageUrl: '',
-      image: null
+      image: null,
+      role: '',
+      roles: ['Administrator', 'Operator'],
+      isLoggedIn: ''
     };
   },
   methods: {
     register: function register() {
       var _this = this;
 
+      this.isAuth();
+
+      if (this.role == 'Administrator') {
+        console.log("entrei");
+        this.role = "a";
+      }
+
+      if (this.role == 'Operator') {
+        this.role = "o";
+      }
+
       axios.post('api/register', {
         name: this.name,
         email: this.email,
         password: this.password,
         nif: this.nif,
-        photo: this.photo
+        photo: this.photo,
+        role: this.role
       }).then(function (response) {
         axios.post('api/wallets/create', {
           email: _this.email
         }).then(function (response) {
-          _this.$router.push({
-            name: 'login'
-          });
+          if (_this.isLoggedIn == false) {
+            _this.$router.push({
+              name: 'login'
+            });
+          } else {
+            _this.$router.push({
+              name: 'admin-statistics'
+            });
+          }
+
+          _this.clearInputs();
         })["catch"](function (error) {
           console.log(error);
         })["catch"](function (error) {
@@ -2433,7 +2473,26 @@ __webpack_require__.r(__webpack_exports__);
         _this2.photo = event.target.result;
         _this2.imageUrl = event.target.result;
       };
+    },
+    isAuth: function isAuth() {
+      if (this.$store.state.token == '') {
+        this.role = 'u';
+        this.isLoggedIn = false;
+      } else {
+        this.isLoggedIn = true;
+        console.log(this.role);
+      }
+    },
+    clearInputs: function clearInputs() {
+      this.name = '';
+      this.email = '';
+      this.password = '';
+      this.nif = '';
+      this.role = '';
     }
+  },
+  mounted: function mounted() {
+    this.isAuth();
   }
 });
 
@@ -22768,7 +22827,7 @@ var render = function() {
                         [
                           _c(
                             "v-list-item-action",
-                            [_c("v-icon", [_vm._v("mdi-account")])],
+                            [_c("v-icon", [_vm._v("mdi-pencil")])],
                             1
                           ),
                           _vm._v(" "),
@@ -22798,6 +22857,31 @@ var render = function() {
                             [
                               _c("v-list-item-title", [
                                 _vm._v("Movement Income")
+                              ])
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.loggedIn && _vm.isAdmin
+                    ? _c(
+                        "v-list-item",
+                        { attrs: { to: { name: "register" } } },
+                        [
+                          _c(
+                            "v-list-item-action",
+                            [_c("v-icon", [_vm._v("mdi-account")])],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-list-item-content",
+                            [
+                              _c("v-list-item-title", [
+                                _vm._v("Register Account")
                               ])
                             ],
                             1
@@ -23071,23 +23155,44 @@ var render = function() {
                 }
               }),
               _vm._v(" "),
-              _c("v-text-field", {
-                attrs: {
-                  color: "blue-grey darken-1",
-                  "background-color": "dark",
-                  id: "nif",
-                  label: "NIF",
-                  name: "nif",
-                  type: "nif"
-                },
-                model: {
-                  value: _vm.nif,
-                  callback: function($$v) {
-                    _vm.nif = $$v
-                  },
-                  expression: "nif"
-                }
-              }),
+              !_vm.isLoggedIn
+                ? _c("v-text-field", {
+                    attrs: {
+                      color: "blue-grey darken-1",
+                      "background-color": "dark",
+                      id: "nif",
+                      label: "NIF",
+                      name: "nif",
+                      type: "nif"
+                    },
+                    model: {
+                      value: _vm.nif,
+                      callback: function($$v) {
+                        _vm.nif = $$v
+                      },
+                      expression: "nif"
+                    }
+                  })
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.isLoggedIn
+                ? _c("v-select", {
+                    attrs: {
+                      items: _vm.roles,
+                      label: "Choose user type",
+                      chips: "",
+                      clearable: "",
+                      "hide-selected": ""
+                    },
+                    model: {
+                      value: _vm.role,
+                      callback: function($$v) {
+                        _vm.role = $$v
+                      },
+                      expression: "role"
+                    }
+                  })
+                : _vm._e(),
               _vm._v(" "),
               _c("br"),
               _vm._v(" "),
@@ -80536,9 +80641,7 @@ router.beforeEach(function (to, from, next) {
     }
 
     if (_store_global_store__WEBPACK_IMPORTED_MODULE_3__["default"].getters.loggedIn && _store_global_store__WEBPACK_IMPORTED_MODULE_3__["default"].getters.isAdmin) {
-      next({
-        name: 'admin-statistics'
-      });
+      next();
     } else {
       next();
     }

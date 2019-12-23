@@ -10,23 +10,26 @@ class RegisterControllerAPI extends Controller
 {
     public function register(Request $request)
     {
+        if (!is_null($request->photo)) {
+            $exploded = explode(',', $request->photo);
+            $decoded = base64_decode($exploded[1]);
 
-        $exploded = explode(',', $request->photo);
-        $decoded = base64_decode($exploded[1]);
+            if (strpos($exploded[0], 'jpeg')) {
+                $extension = 'jpg';
+            }else{
+                $extension = 'png';
+            } 
+            
+            $str=rand(0, 10000); 
+            
+            $filename = $str.'.'.$extension;
 
-        if (strpos($exploded[0], 'jpeg')) {
-            $extension = 'jpg';
+            $path = 'storage/fotos/'.$filename;
+
+            file_put_contents($path, $decoded);
         }else{
-            $extension = 'png';
-        } 
-        
-        $str=rand(0, 10000); 
-        
-        $filename = $str.'.'.$extension;
-
-        $path = 'storage/fotos/'.$filename;
-
-        file_put_contents($path, $decoded);
+            $filename = null;
+        }
 
         $request->validate([
             'name' => 'required|string|max:255',
@@ -41,7 +44,8 @@ class RegisterControllerAPI extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'nif' => $request->nif,
-            'photo' => $filename
+            'photo' => $filename,
+            'type' => $request->role,
         ]);
 
     }

@@ -33,6 +33,7 @@
           v-model="password"
         />
         <v-text-field
+          v-if="!isLoggedIn"
           color="blue-grey darken-1"
           background-color="dark"
           id="nif"
@@ -41,6 +42,15 @@
           type="nif"
           v-model="nif"
         />
+        <v-select
+          v-if="isLoggedIn"
+          v-model="role"
+          :items="roles"
+          label="Choose user type"
+          chips
+          clearable
+          hide-selected
+        ></v-select>
         <br>
         <div class="form-control mb-more">
           <label for="photo">PHOTO</label>
@@ -77,27 +87,43 @@ export default {
         email: '',
         password: '',
         nif: '',
-        // photo: '',
         imageData: '',
         imageUrl: '',
         image: null,
+        role: '',
+        roles: ['Administrator', 'Operator'],
+        isLoggedIn: '',
     }
   },
   methods: {
       register: function() {
+        this.isAuth();
+        if(this.role == 'Administrator'){
+          console.log("entrei");
+          this.role = "a";
+        }
+        if(this.role == 'Operator'){
+          this.role = "o";
+        }
          axios.post('api/register', {
            name: this.name,
            email: this.email,
            password: this.password,
            nif: this.nif,
            photo: this.photo,
+           role: this.role,
          })
          .then(response => {
            axios.post('api/wallets/create', {
              email: this.email,
            })
            .then(response => {
-              this.$router.push({name: 'login'})
+             if(this.isLoggedIn == false){
+                this.$router.push({name: 'login'});
+             }else{
+                this.$router.push({name: 'admin-statistics'});
+             }
+             this.clearInputs();
            })
            .catch(error => {
              console.log(error);
@@ -118,7 +144,26 @@ export default {
           this.photo = event.target.result;
           this.imageUrl = event.target.result;
         }
+    },
+    isAuth(){
+      if(this.$store.state.token == ''){
+         this.role = 'u';
+         this.isLoggedIn = false;
+      }else{
+        this.isLoggedIn = true;
+        console.log(this.role);
+      }
+    },
+    clearInputs() {
+       this.name = '';
+       this.email = '';
+       this.password = '';
+       this.nif = '';
+       this.role = '';
     }
+  },
+  mounted() {
+    this.isAuth();
   }
 };
 </script>

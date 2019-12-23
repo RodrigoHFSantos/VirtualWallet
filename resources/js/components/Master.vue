@@ -32,7 +32,7 @@
           </v-list-item>
           <v-list-item v-if="loggedIn" :to="{ name: 'editprofile' }">
             <v-list-item-action>
-              <v-icon>mdi-account</v-icon>
+              <v-icon>mdi-pencil</v-icon>
             </v-list-item-action>
             <v-list-item-content>
               <v-list-item-title>Edit Profile</v-list-item-title>
@@ -44,6 +44,14 @@
             </v-list-item-action>
             <v-list-item-content>
               <v-list-item-title>Movement Income</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item v-if="loggedIn && isAdmin" :to="{ name: 'register' }">
+            <v-list-item-action>
+              <v-icon>mdi-account</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>Register Account</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
           <v-list-item to="/about">

@@ -56,9 +56,7 @@ router.beforeEach((to, from, next) => {
       next()
     }
     if (store.getters.loggedIn && store.getters.isAdmin) {
-      next({
-        name: 'admin-statistics',
-      })
+      next()
     } else {
       next()
     }
