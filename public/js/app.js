@@ -2438,25 +2438,27 @@ __webpack_require__.r(__webpack_exports__);
         photo: this.photo,
         role: this.role
       }).then(function (response) {
-        axios.post('api/wallets/create', {
-          email: _this.email
-        }).then(function (response) {
-          if (_this.isLoggedIn == false) {
-            _this.$router.push({
-              name: 'login'
-            });
-          } else {
-            _this.$router.push({
-              name: 'admin-statistics'
-            });
-          }
+        if (_this.role == 'u') {
+          axios.post('api/wallets/create', {
+            email: _this.email
+          }).then(function (response) {})["catch"](function (error) {
+            console.log(error);
+          });
+        }
 
-          _this.clearInputs();
-        })["catch"](function (error) {
-          console.log(error);
-        })["catch"](function (error) {
-          console.log(error);
-        });
+        if (_this.isLoggedIn == false) {
+          _this.$router.push({
+            name: 'login'
+          });
+        } else {
+          _this.$router.push({
+            name: 'admin-statistics'
+          });
+        }
+
+        _this.clearInputs();
+      })["catch"](function (error) {
+        console.log(error);
       });
     },
     onPickFile: function onPickFile() {

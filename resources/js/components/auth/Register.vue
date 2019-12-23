@@ -114,27 +114,29 @@ export default {
            role: this.role,
          })
          .then(response => {
-           axios.post('api/wallets/create', {
-             email: this.email,
-           })
-           .then(response => {
-             if(this.isLoggedIn == false){
-                this.$router.push({name: 'login'});
-             }else{
-                this.$router.push({name: 'admin-statistics'});
-             }
-             this.clearInputs();
-           })
-           .catch(error => {
-             console.log(error);
-           })
+            if(this.role == 'u'){
+              axios.post('api/wallets/create', {
+              email: this.email,
+            })
+            .then(response => {
+            })
+            .catch(error => {
+              console.log(error);
+            })
+           }
+            if(this.isLoggedIn == false){
+              this.$router.push({name: 'login'});
+            }else{
+              this.$router.push({name: 'admin-statistics'});
+            }
+            this.clearInputs();
+         })
           .catch(error => {
             console.log(error);
           })
-         })
       },
       onPickFile(){
-        this.$refs.fileInput.click();
+      this.$refs.fileInput.click();
       },
       onFilePicked (event) {
         let photo = event.target.files[0];
@@ -144,23 +146,23 @@ export default {
           this.photo = event.target.result;
           this.imageUrl = event.target.result;
         }
-    },
-    isAuth(){
-      if(this.$store.state.token == ''){
-         this.role = 'u';
-         this.isLoggedIn = false;
-      }else{
-        this.isLoggedIn = true;
-        console.log(this.role);
+      },
+      isAuth(){
+        if(this.$store.state.token == ''){
+          this.role = 'u';
+          this.isLoggedIn = false;
+        }else{
+          this.isLoggedIn = true;
+          console.log(this.role);
+        }
+      },
+      clearInputs() {
+        this.name = '';
+        this.email = '';
+        this.password = '';
+        this.nif = '';
+        this.role = '';
       }
-    },
-    clearInputs() {
-       this.name = '';
-       this.email = '';
-       this.password = '';
-       this.nif = '';
-       this.role = '';
-    }
   },
   mounted() {
     this.isAuth();
