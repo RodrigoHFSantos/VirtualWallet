@@ -41,7 +41,7 @@
             v-model.trim="$v.confpassword.$model"
             :rules="[$v.confpassword.required || 'Passwords must be identical', $v.confpassword.sameAsPassword || 'Passwords must be identical']"
           />  
-        <v-text-field
+        <v-text-field v-if="userRole === 'u'"
           color="blue-grey darken-1"
           background-color="dark"
           id="nif"
@@ -95,7 +95,7 @@ const alpha = helpers.regex('alpha', /^[a-zA-Z ]*$/);
                 nif: this.$store.state.user.nif,
                 imageUrl: 'storage/fotos/' + this.$store.state.user.photo,
                 photo: '',
-               
+                userRole: '',
             }
         },
         methods: {
@@ -103,12 +103,10 @@ const alpha = helpers.regex('alpha', /^[a-zA-Z ]*$/);
               this.$refs.fileInput.click();
             },
             onFilePicked (event) {
-                console.log(event.target.files[0]);
                 let photo = event.target.files[0];
                 var fileReader = new FileReader();
                 fileReader.readAsDataURL(event.target.files[0])
                 fileReader.onload = (event) =>{
-                    console.log(event.target.result)
                     this.photo = event.target.result;
                     this.imageUrl = event.target.result;
                 }
@@ -124,13 +122,15 @@ const alpha = helpers.regex('alpha', /^[a-zA-Z ]*$/);
                     photo: this.photo
                 })
                 .then(response => {
-                    console.log(response.data);
                     this.$store.commit("setUser", response.data);
                     this.$router.push({name: 'home'});
                 }).catch(error =>{
                     console.log(error);
                 })
             }
+        },
+        mounted(){
+          this.userRole = this.$store.state.user.type;
         },
         validations: {
             password: {

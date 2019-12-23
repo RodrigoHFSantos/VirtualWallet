@@ -30,7 +30,6 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
     if (to.matched.some(record => record.meta.requiresAuth)) {
       if (!store.getters.loggedIn) {
-        console.log(store.state.token);
         next({
           name: 'login',
         })
@@ -38,13 +37,32 @@ router.beforeEach((to, from, next) => {
         next()
       }
     } else if (to.matched.some(record => record.meta.requiresVisitor)) {
-      if (store.getters.loggedIn) {
+      // console.log(store.getters.isUser);
+      // console.log(router.currentRoute.name);
+      if (store.getters.loggedIn && store.getters.isUser) {
+        console.log("require visitor, estou logado e sou user");
         next({
           name: 'wallet',
         })
       } else {
         next()
       }
+      if (store.getters.loggedIn && store.getters.isOperator) {
+        next({
+          name: 'about',
+        })
+      } else {
+        next()
+      }
+      if (store.getters.loggedIn && store.getters.isAmin) {
+        // console.log("yah");
+        next({
+          name: 'about',
+        })
+      } else {
+        next()
+      }
+
     } else if (to.matched.some(record => record.meta.requiresOperator)) {
       if (!store.getters.isOperator) {
         next({

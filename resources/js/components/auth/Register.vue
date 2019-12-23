@@ -85,7 +85,6 @@ export default {
   },
   methods: {
       register: function() {
-        //console.log(this.photo.imageUrl);
          axios.post('api/register', {
            name: this.name,
            email: this.email,
@@ -112,12 +111,10 @@ export default {
         this.$refs.fileInput.click();
       },
       onFilePicked (event) {
-        console.log(event.target.files[0]);
         let photo = event.target.files[0];
         var fileReader = new FileReader();
         fileReader.readAsDataURL(event.target.files[0])
         fileReader.onload = (event) =>{
-          console.log(event.target.result)
           this.photo = event.target.result;
           this.imageUrl = event.target.result;
         }

@@ -107,7 +107,6 @@
             if(this.checkForm()){
                 axios.post('api/movements/register/income', this.data)
                 .then(response => {
-                    console.log(response);
                     this.data.email = '';
                     this.data.value = '';
                     this.data.type_payment = '';

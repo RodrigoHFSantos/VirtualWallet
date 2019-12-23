@@ -1,0 +1,95 @@
+<template>
+  <div>
+    <div class="text-center">
+      <v-dialog v-model="dialog" width="500">
+        <template v-slot:activator="{ on }">
+          <v-btn small class="info" dark width="50" v-on="on" @click.stop="dialog = true">Edit</v-btn>
+        </template>
+        <v-card  class="mx-auto" max-height="450px">
+          <v-card-title class="blue-grey darken-4 cardTitle" primary-title>Edit Movement</v-card-title>
+
+          <v-card-text class="text--primary pt-4">
+            <div>
+              <p class="label">Category</p>
+              <v-combobox
+                  v-model="category_edit"
+                  :items="categories_names"
+                  label="Edit Category:"
+                  chips
+                  clearable
+                  hide-selected
+                ></v-combobox>
+            </div>
+
+            <div>
+              <p class="label" text-color="blue-grey darken-4">Descrição</p>
+              <textarea class="textArea" v-model="description_edit" placeholder="Movement Description"></textarea>
+            </div>
+          </v-card-text>
+
+          <v-divider></v-divider>
+
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="green" text @click="editMovement">Edit</v-btn>
+            <v-btn color="primary" text @click="close">Close</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  props: {
+    movement: null,
+    categories_names: '' ,
+  },
+  data() {
+    return {
+      dialog: false,
+      category_edit: this.movement.category_name,
+      description_edit: this.movement.description,
+    };
+  },
+  methods:{
+    editMovement() {
+      axios.put('api/movements/users/edit', {
+        id: this.movement.id,
+        category: this.category_edit,
+        description : this.description_edit
+      })
+      .then(response => {
+        this.$emit('edited', response);
+        this.close();
+      })
+      .catch(error => {
+        console.log(error);
+      })
+    },
+    close() {
+      this.category_edit = '';
+      this.description_edit = '';
+      this.dialog = false;
+    },
+  },
+  mounted() {
+  }
+};
+</script>
+
+<style lang="scss" scoped>
+.cardTitle {
+  font-size: 30px;
+}
+
+.label {
+  font-size: 20px;
+}
+
+.textArea {
+  width: 100%;
+}
+</style>
+

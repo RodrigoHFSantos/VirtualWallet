@@ -32,11 +32,6 @@ const wallet = Vue.component('wallet', WalletComponent);
 import UserRegisterExpenseComponent from './components/movements/user/UserExpenseMovement.vue';
 const userRegisterExpense = Vue.component('userRegisterExpense', UserRegisterExpenseComponent);
 
-
-
-// import MovementsDetailsComponent from './components/movements/auth_user/MovementDetails.vue';
-// const details = Vue.component('details', MovementsDetailsComponent);
-
 const routes = [
     { 
         path: '/',
@@ -75,6 +70,9 @@ const routes = [
         path: '/users/me',
         name: 'editprofile',
         component: editprofile,
+        meta: {
+            requiresAuth: true,
+        }
     },
 
     {
@@ -97,13 +95,9 @@ const routes = [
         component: wallet,
         meta: {
             requiresAuth: true,
+            requiresUser: true,
         }
     },
-    // {
-    //     path: '/wallet/movements/details',
-    //     name: 'details',
-    //     component: details,
-    // },
 
     {
         path: '/user/movements/register-expense',

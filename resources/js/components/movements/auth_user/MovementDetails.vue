@@ -24,8 +24,6 @@
               <p>{{movement.mb_payment_reference}}</p>
             </div>
 
-             
-
             <div v-if="movement.description != null">
               <p class="label" text-color="blue-grey darken-4">Descrição:</p>
               <p>{{movement.description}}</p>

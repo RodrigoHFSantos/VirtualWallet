@@ -12,6 +12,16 @@ use App\Http\Resources\Resource;
 
 class MovementsControllerAPI extends Controller
 {
+    public function editMovement(Request $request){
+        $category = Category::where('name', $request->category)->first();
+        if(Movement::where('id', $request->id)->update(['category_id' => $category->id ,'description' => $request->description]) == 1){
+            $movement_edited = Movement::where('id', $request->id)->first();
+            return $movement_edited;
+        }else{
+            return response()->json(['message' => 'Error editing movement'], 404);
+        }
+    }
+
     public function registerExpense(Request $request)
     {   
         $user = Auth::user(); 

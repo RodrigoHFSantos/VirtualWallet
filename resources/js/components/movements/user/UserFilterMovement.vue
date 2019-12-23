@@ -84,13 +84,13 @@
 <script>
 export default {
   props: {
-    activator: null
+    activator: null,
+    categories_names: '' ,
   },
   data() {
     return {
       ids_numbers: [],
       id_selected: "",
-      categories_names: [],
       category_selected: "",
       movement_types: ["Expense", "Income"],
       movement_type_selected: "",
@@ -123,23 +123,12 @@ export default {
         })
         .then(response => {
           this.dialog = false;
-          this.$emit('clicked', response.data);
+          const objToArray = Object.values(response.data);
+          this.$emit('clicked', objToArray);
           this.clearAllFields();
         })
         .catch(error => {
           this.clearAllFields();
-          console.log(error);
-        });
-    },
-    getAllCategoriesNames() {
-      axios
-        .get("api/categories/names")
-        .then(response => {
-          response.data.map(category =>
-            this.categories_names.push(category.name)
-          );
-        })
-        .catch(error => {
           console.log(error);
         });
     },
@@ -190,7 +179,6 @@ export default {
     }
   },
   mounted() {
-    this.getAllCategoriesNames();
     this.getMyMovementsIds();
     this.getEmailsFromMyMovements();
     this.clearDate();

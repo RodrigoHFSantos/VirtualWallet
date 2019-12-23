@@ -22,7 +22,7 @@
               <v-list-item-title>Logout</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
-          <v-list-item v-if="loggedIn" to="/wallet/me">
+          <v-list-item v-if="loggedIn && isUser" to="/wallet/me">
             <v-list-item-action>
               <v-icon>mdi-wallet</v-icon>
             </v-list-item-action>
@@ -84,15 +84,18 @@ export default {
         }
     },
    computed: {
-     loggedIn: function(){
-       return this.$store.getters.loggedIn;
-     },
-     isOperator: function(){
-       return this.$store.getters.isOperator;
-     },
-     isUser: function(){
-       return this.$store.getters.isUser;
-     }
+    loggedIn: function(){
+      return this.$store.getters.loggedIn;
+    },
+    isOperator: function(){
+      return this.$store.getters.isOperator;
+    },
+    isUser: function(){
+      return this.$store.getters.isUser;
+    },
+    isAdmin: function(){
+      return this.$store.getters.isAdmin;
+    }
    },
    methods: {
      logout() {
