@@ -48,13 +48,15 @@ export default {
             return axios.get("api/users/me");
          })
          .then(response => {
-            // console.log( response.data.data);
             this.$store.commit("setUser", response.data.data);
-            // console.log(response.data.data.type);
             if(this.$store.getters.isUser){
               this.$router.push({ name: "wallet" });
-            }else{
-              this.$router.push({ name: "about" });
+            }
+            if(this.$store.getters.isOperator){
+              this.$router.push({ name: "operator-movement-income" });
+            }
+            if(this.$store.getters.isAdmin){
+              this.$router.push({ name: "admin-statistics" });
             }
          })
       }

@@ -60,6 +60,9 @@ import UserExpenseMovement from "../movements/user/UserExpenseMovement.vue";
 		
 		mounted(){
 			this.getCurrentBalance();
+			if(this.$store.state.token == ''){
+				this.$router.push({name: 'login'})
+			}
 		}
 	}
 </script>

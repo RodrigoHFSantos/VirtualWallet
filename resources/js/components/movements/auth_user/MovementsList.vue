@@ -145,6 +145,9 @@ export default {
     mounted() {
       this.getMovements();
       this.getAllCategoriesNames();
+      if(this.$store.state.token == ''){
+				this.$router.push({name: 'login'})
+			}
     },
 }
 </script>

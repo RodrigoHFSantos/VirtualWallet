@@ -32,6 +32,9 @@ const wallet = Vue.component('wallet', WalletComponent);
 import UserRegisterExpenseComponent from './components/movements/user/UserExpenseMovement.vue';
 const userRegisterExpense = Vue.component('userRegisterExpense', UserRegisterExpenseComponent);
 
+import AdminStatisticsComponent from './components/statistics/admin/AdminStatistics.vue';
+const adminStatistics = Vue.component('adminStatistics', AdminStatisticsComponent);
+
 const routes = [
     { 
         path: '/',
@@ -80,6 +83,7 @@ const routes = [
         name: 'operator-movement-income',
         component: operatorMovementIncome,
         meta: {
+            requiresAuth: true,
             requiresOperator: true,
         }
     },
@@ -88,6 +92,10 @@ const routes = [
         path: '/wallet/movements/me',
         name: 'movementsList',
         component: movementsList,
+        meta: {
+            requiresAuth: true,
+            requiresUser: true,
+        }
     },
     {
         path: '/wallet/me',
@@ -104,7 +112,18 @@ const routes = [
         name: 'user-movements-register-expense',
         component: userRegisterExpense,
         meta: {
+            requiresAuth: true,
             requiresUser: true,
+        }
+    },
+
+    {
+        path: '/admin/statistics',
+        name: 'admin-statistics',
+        component: adminStatistics,
+        meta: {
+            requiresAuth: true,
+            requiresAdmin: true,
         }
     }
 ]

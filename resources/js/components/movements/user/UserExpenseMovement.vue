@@ -187,6 +187,9 @@ export default {
   mounted() {
     this.getAllCategoriesNames();
     this.route();
+    if(this.$store.state.token == ''){
+			this.$router.push({name: 'login'})
+		}
   }
 };
 </script>

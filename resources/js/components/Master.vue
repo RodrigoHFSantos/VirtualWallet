@@ -101,7 +101,7 @@ export default {
      logout() {
       axios.post("api/logout").then(response => {
         this.$store.commit("clearUserAndToken");
-        this.$router.push({name: "home"});
+        this.$router.push({name: 'home'});
       })
       .catch(error => {
         this.$store.commit("clearUserAndToken");

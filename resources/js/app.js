@@ -28,61 +28,98 @@ const router = new VueRouter({
 
 
 router.beforeEach((to, from, next) => {
-    if (to.matched.some(record => record.meta.requiresAuth)) {
-      if (!store.getters.loggedIn) {
-        next({
-          name: 'login',
-        })
-      } else {
-        next()
-      }
-    } else if (to.matched.some(record => record.meta.requiresVisitor)) {
-      // console.log(store.getters.isUser);
-      // console.log(router.currentRoute.name);
-      if (store.getters.loggedIn && store.getters.isUser) {
-        console.log("require visitor, estou logado e sou user");
-        next({
-          name: 'wallet',
-        })
-      } else {
-        next()
-      }
-      if (store.getters.loggedIn && store.getters.isOperator) {
-        next({
-          name: 'about',
-        })
-      } else {
-        next()
-      }
-      if (store.getters.loggedIn && store.getters.isAmin) {
-        // console.log("yah");
-        next({
-          name: 'about',
-        })
-      } else {
-        next()
-      }
-
-    } else if (to.matched.some(record => record.meta.requiresOperator)) {
-      if (!store.getters.isOperator) {
-        next({
-          name: 'home',
-        })
-      } else {
-        next()
-      } 
-    } else if (to.matched.some(record => record.meta.requiresUser)) {
-      if (!store.getters.isUser) {
-        next({
-          name: 'home',
-        })
-      } else {
-        next()
-      } 
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    store.commit('loadTokenAndUserFromSession');
+    if (!store.getters.loggedIn) {
+      next({
+        name: 'login',
+      })
     } else {
       next()
     }
-  })
+  } else {
+    next()
+  }
+  if (to.matched.some(record => record.meta.requiresVisitor)) {
+    if (store.getters.loggedIn && store.getters.isUser) {
+      next({
+        name: 'wallet',
+      })
+    } else {
+      next()
+    }
+    if (store.getters.loggedIn && store.getters.isOperator) {
+      next({
+        name: 'operator-movement-income',
+      })
+    } else {
+      next()
+    }
+    if (store.getters.loggedIn && store.getters.isAdmin) {
+      next({
+        name: 'admin-statistics',
+      })
+    } else {
+      next()
+    }
+  } else {
+    next()
+  }
+  if (to.matched.some(record => record.meta.requiresUser)) {
+    if (store.getters.loggedIn && store.getters.isOperator) {
+      next({
+        name: 'operator-movement-income',
+      })
+    } else {
+      next()
+    }
+    if (store.getters.loggedIn && store.getters.isAdmin) {
+      next({
+        name: 'admin-statistics',
+      })
+    } else {
+      next()
+    }
+  } else {
+    next()
+  }
+  if (to.matched.some(record => record.meta.requiresOperator)) {
+    if (store.getters.loggedIn && store.getters.isUser) {
+      next({
+        name: 'wallet',
+      })
+    } else {
+      next()
+    }
+    if (store.getters.loggedIn && store.getters.isAdmin) {
+      next({
+        name: 'admin-statistics',
+      })
+    } else {
+      next()
+    }
+  } else {
+    next()
+  }
+  if (to.matched.some(record => record.meta.requiresAdmin)) {
+    if (store.getters.loggedIn && store.getters.isUser) {
+      next({
+        name: 'wallet',
+      })
+    } else {
+      next()
+    }
+    if (store.getters.loggedIn && store.getters.isOperator) {
+      next({
+        name: 'operator-movement-income',
+      })
+    } else {
+      next()
+    }
+  } else {
+    next()
+  }
+})
 
 const app = new Vue({
     router,

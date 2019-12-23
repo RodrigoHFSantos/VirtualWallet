@@ -131,6 +131,9 @@ const alpha = helpers.regex('alpha', /^[a-zA-Z ]*$/);
         },
         mounted(){
           this.userRole = this.$store.state.user.type;
+          if(this.$store.state.token == ''){
+				    this.$router.push({name: 'login'})
+			    }
         },
         validations: {
             password: {

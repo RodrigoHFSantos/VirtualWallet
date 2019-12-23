@@ -162,6 +162,11 @@
                 this.errors.push('Source Descritpion required.');
             }
         },
+        mounted() {
+            if(this.$store.state.token == ''){
+				this.$router.push({name: 'login'})
+			}
+        }
     }
   }
 </script>
