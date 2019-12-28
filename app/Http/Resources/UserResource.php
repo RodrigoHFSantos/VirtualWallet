@@ -23,7 +23,7 @@ class UserResource extends JsonResource
             'active' => $this->active,
             'photo' => $this->photo,
             'nif' => $this->nif,
-            'password'=> $this->password,//faltava isto
+            'password'=> $this->password,
         ];
     }
 }

@@ -99,11 +99,10 @@ export default {
       register: function() {
         this.isAuth();
         if(this.role == 'Administrator'){
-          console.log("entrei");
-          this.role = "a";
+          this.role = 'a';
         }
         if(this.role == 'Operator'){
-          this.role = "o";
+          this.role = 'o';
         }
          axios.post('api/register', {
            name: this.name,

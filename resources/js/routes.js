@@ -32,8 +32,11 @@ const wallet = Vue.component('wallet', WalletComponent);
 import UserRegisterExpenseComponent from './components/movements/user/UserExpenseMovement.vue';
 const userRegisterExpense = Vue.component('userRegisterExpense', UserRegisterExpenseComponent);
 
-import AdminStatisticsComponent from './components/statistics/admin/AdminStatistics.vue';
+import AdminStatisticsComponent from './components/admin/statistics/AdminStatistics.vue';
 const adminStatistics = Vue.component('adminStatistics', AdminStatisticsComponent);
+
+import ManageAllUserAccountsComponent from './components/admin/ManageAllUserAccounts.vue';
+const manageAllUserAccounts = Vue.component('manageAllUserAccounts', ManageAllUserAccountsComponent);
 
 const routes = [
     { 
@@ -121,6 +124,16 @@ const routes = [
         path: '/admin/statistics',
         name: 'admin-statistics',
         component: adminStatistics,
+        meta: {
+            requiresAuth: true,
+            requiresAdmin: true,
+        }
+    },
+
+    {
+        path: '/admin/manageAccounts',
+        name: 'admin-manage-user-accounts',
+        component: manageAllUserAccounts,
         meta: {
             requiresAuth: true,
             requiresAdmin: true,

@@ -46,6 +46,14 @@
               <v-list-item-title>Movement Income</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
+          <v-list-item v-if="loggedIn && isAdmin" :to="{ name: 'admin-manage-user-accounts' }">
+            <v-list-item-action>
+              <v-icon>mdi-account</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>Manage All User Accounts</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
           <v-list-item v-if="loggedIn && isAdmin" :to="{ name: 'register' }">
             <v-list-item-action>
               <v-icon>mdi-account</v-icon>

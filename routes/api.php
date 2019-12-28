@@ -31,6 +31,11 @@ Route::post('wallets/create', 'WalletControllerAPI@create');
 //Routes for Users
 Route::middleware('auth:api')->get('users/me', 'UserControllerAPI@myProfile');
 Route::middleware('auth:api')->put('users/me', 'UserControllerAPI@editprofile')->name('editprofile');
+Route::middleware('auth:api')->get('users/all', 'UserControllerAPI@allUsers');
+Route::middleware('auth:api')->get('users/names-emails', 'UserControllerAPI@userNamesEmails');
+Route::middleware('auth:api')->get('users/filter', 'UserControllerAPI@filter');
+Route::middleware('auth:api')->put('users/activate-or-deactivate', 'UserControllerAPI@activateOrDesactivate');
+Route::middleware('auth:api')->delete('user/delete', 'UserControllerAPI@removeUser');
 
 //Routes for Movements
 Route::middleware('auth:api')->post('movements/register/income', 'MovementsControllerAPI@registerIncome');
