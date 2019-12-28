@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Movement;
 use App\Wallet;
+use App\User;
 use App\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -198,5 +199,24 @@ class MovementsControllerAPI extends Controller
             $movements_filtered = $movements_filtered->where('date', '<=', $end_date);
         }
         return $movements_filtered;
+    }
+
+    public function photoMovementTransfer(Request $request)
+    {
+        //Buscar a wallet do transfer_wallet_id do movement
+        $movement = Movement::where('id', $request->input('id'))->first();
+
+        $wallet = Wallet::where('id', $movement->transfer_wallet_id)->first();
+
+        if($wallet != null){
+            $user = User::where('email',$wallet->email)->first();
+        }else{
+            return $photo = null;
+        }
+
+        $photo = $user->photo;
+
+        
+        return $photo;
     }
 }

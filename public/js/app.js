@@ -3126,17 +3126,48 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     movement: null
   },
   data: function data() {
     return {
-      dialog: false
+      dialog: false,
+      imageUrl: '',
+      // movementID: this.movement.id,
+      i: 0
     };
   },
-  mounted: function mounted() {// console.log(this.movement);
-  }
+  methods: {
+    showDetails: function showDetails(id) {
+      var _this = this;
+
+      this.dialog = true;
+      axios.get("api/movements/details/photo", {
+        params: {
+          id: id
+        }
+      }).then(function (response) {
+        if (response.data != null) {
+          _this.imageUrl = 'storage/fotos/' + response.data;
+        }
+
+        if (response.data == "") {
+          _this.imageUrl = null;
+        }
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    }
+  },
+  mounted: function mounted() {}
 });
 
 /***/ }),
@@ -25186,8 +25217,7 @@ var render = function() {
                           attrs: { small: "", dark: "" },
                           on: {
                             click: function($event) {
-                              $event.stopPropagation()
-                              _vm.dialog = true
+                              return _vm.showDetails(_vm.movement.id)
                             }
                           }
                         },
@@ -25280,11 +25310,33 @@ var render = function() {
                       ])
                     : _vm._e(),
                   _vm._v(" "),
+                  _vm.imageUrl != null
+                    ? _c("div", [
+                        _c(
+                          "p",
+                          {
+                            staticClass: "label",
+                            attrs: { "text-color": "blue-grey darken-4" }
+                          },
+                          [_vm._v("Photo:")]
+                        ),
+                        _vm._v(" "),
+                        _c("img", {
+                          attrs: {
+                            src: _vm.imageUrl,
+                            height: "150",
+                            weight: "150"
+                          }
+                        })
+                      ])
+                    : _vm._e(),
+                  _vm._v(" "),
                   _vm.movement.iban == null &&
                   _vm.movement.description == null &&
                   _vm.movement.source_description == null &&
                   _vm.movement.mb_payment_reference == null &&
-                  _vm.movement.mb_payment_reference == null
+                  _vm.movement.mb_payment_reference == null &&
+                  _vm.imageUrl == null
                     ? _c("div", [
                         _c("label", { staticClass: "label" }, [
                           _vm._v("Não há detalhes disponiveis!")
@@ -83153,14 +83205,15 @@ __webpack_require__.r(__webpack_exports__);
 /*!*************************************************************************!*\
   !*** ./resources/js/components/movements/auth_user/MovementDetails.vue ***!
   \*************************************************************************/
-/*! exports provided: default */
+/*! no static exports found */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _MovementDetails_vue_vue_type_template_id_7a7bff80_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./MovementDetails.vue?vue&type=template&id=7a7bff80&scoped=true& */ "./resources/js/components/movements/auth_user/MovementDetails.vue?vue&type=template&id=7a7bff80&scoped=true&");
 /* harmony import */ var _MovementDetails_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./MovementDetails.vue?vue&type=script&lang=js& */ "./resources/js/components/movements/auth_user/MovementDetails.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _MovementDetails_vue_vue_type_style_index_0_id_7a7bff80_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./MovementDetails.vue?vue&type=style&index=0&id=7a7bff80&lang=scss&scoped=true& */ "./resources/js/components/movements/auth_user/MovementDetails.vue?vue&type=style&index=0&id=7a7bff80&lang=scss&scoped=true&");
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _MovementDetails_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _MovementDetails_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+/* harmony import */ var _MovementDetails_vue_vue_type_style_index_0_id_7a7bff80_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./MovementDetails.vue?vue&type=style&index=0&id=7a7bff80&lang=scss&scoped=true& */ "./resources/js/components/movements/auth_user/MovementDetails.vue?vue&type=style&index=0&id=7a7bff80&lang=scss&scoped=true&");
 /* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
@@ -83192,7 +83245,7 @@ component.options.__file = "resources/js/components/movements/auth_user/Movement
 /*!**************************************************************************************************!*\
   !*** ./resources/js/components/movements/auth_user/MovementDetails.vue?vue&type=script&lang=js& ***!
   \**************************************************************************************************/
-/*! exports provided: default */
+/*! no static exports found */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -83940,8 +83993,8 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\laragon\www\VirtualWallet\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\laragon\www\VirtualWallet\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! D:\laragon\www\VirtualWallet\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! D:\laragon\www\VirtualWallet\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

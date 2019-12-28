@@ -3,9 +3,9 @@
     <div class="text-center">
       <v-dialog v-model="dialog" width="500">
         <template v-slot:activator="{ on }">
-          <v-btn small class="info" dark v-on="on" @click.stop="dialog = true">Details</v-btn>
+          <v-btn small class="info" dark v-on="on" @click="showDetails(movement.id)">Details</v-btn>
         </template>
-        <v-card  class="mx-auto" max-height="450px">
+        <v-card class="mx-auto" max-height="450px">
           <v-card-title class="blue-grey darken-4 cardTitle" primary-title>Details</v-card-title>
 
           <v-card-text class="text--primary pt-4">
@@ -32,12 +32,19 @@
               <p class="label">Descrição da fonte:</p>
               <p>{{movement.source_description}}</p>
             </div>
+            <div v-if="imageUrl != null">
+              <p class="label" text-color="blue-grey darken-4">Photo:</p>
+              <img :src="imageUrl" height="150" weight="150">
+            </div>
             <div
               v-if="movement.iban == null && movement.description == null && movement.source_description == null
-               && movement.mb_payment_reference == null && movement.mb_payment_reference == null"
+               && movement.mb_payment_reference == null && movement.mb_payment_reference == null && imageUrl == null"
             >
               <label class="label">Não há detalhes disponiveis!</label>
             </div>
+
+            
+
           </v-card-text>
 
           <v-divider></v-divider>
@@ -59,11 +66,37 @@ export default {
   },
   data() {
     return {
-      dialog: false
+      dialog: false,
+      imageUrl: '',
+      // movementID: this.movement.id,
+      i: 0,
     };
   },
+  methods: {
+    showDetails(id){
+      this.dialog = true;
+      axios.get("api/movements/details/photo", { params: {
+          id: id
+      }})
+      .then(response => {
+        if(response.data != null){
+          this.imageUrl = 'storage/fotos/' + response.data;
+        }
+
+        if(response.data == ""){
+          this.imageUrl = null;
+        }
+        
+
+      })
+      .catch(error => {
+        console.log(error);
+      });
+
+    }
+  },
   mounted() {
-    // console.log(this.movement);
+    
   }
 };
 </script>
