@@ -13,6 +13,7 @@ import routes from './routes';
 import store from './store/global-store';
 import Vuelidate from 'vuelidate';
 import VCalendar from 'v-calendar';
+import VueSocketIO from "vue-socket.io";
 
 Vue.use(
     VCalendar, {componentPrefix: 'vc'},
@@ -25,6 +26,12 @@ const router = new VueRouter({
     routes,
     // history = true //era suposto tirar o # do url mas nao funciona
 })
+
+Vue.use(new VueSocketIO({
+  debug: true,
+  connection: 'http://10.200.0.203'
+})); 
+ 
 
 
 router.beforeEach((to, from, next) => {
