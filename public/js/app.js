@@ -3929,6 +3929,8 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuelidate/lib/validators */ "./node_modules/vuelidate/lib/validators/index.js");
+/* harmony import */ var vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__);
 //
 //
 //
@@ -4012,6 +4014,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     activator: null,
@@ -4112,6 +4116,11 @@ __webpack_require__.r(__webpack_exports__);
     this.getMyMovementsIds();
     this.getEmailsFromMyMovements();
     this.clearDate();
+  },
+  validations: {
+    id_selected: {
+      numeric: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["numeric"]
+    }
   }
 });
 
@@ -26544,7 +26553,11 @@ var render = function() {
                                 label: "Filter by Id",
                                 chips: "",
                                 clearable: "",
-                                "hide-selected": ""
+                                "hide-selected": "",
+                                rules: [
+                                  _vm.$v.id_selected.numeric ||
+                                    "ID can only have digits!"
+                                ]
                               },
                               model: {
                                 value: _vm.id_selected,
@@ -26555,7 +26568,7 @@ var render = function() {
                               }
                             }),
                             _vm._v(" "),
-                            _c("v-combobox", {
+                            _c("v-select", {
                               attrs: {
                                 items: _vm.categories_names,
                                 label: "Filter by Category",
@@ -26589,7 +26602,7 @@ var render = function() {
                               }
                             }),
                             _vm._v(" "),
-                            _c("v-combobox", {
+                            _c("v-select", {
                               attrs: {
                                 items: _vm.movement_payment_types,
                                 label: "Filter by Payment Type",
@@ -26606,7 +26619,7 @@ var render = function() {
                               }
                             }),
                             _vm._v(" "),
-                            _c("v-combobox", {
+                            _c("v-select", {
                               attrs: {
                                 items: _vm.transfer_emails,
                                 label: "Filter by Transfer e-mail",

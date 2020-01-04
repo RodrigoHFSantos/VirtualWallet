@@ -19,15 +19,16 @@
                   chips
                   clearable
                   hide-selected
+                  :rules="[$v.id_selected.numeric || 'ID can only have digits!']"  
                 ></v-combobox>
-                <v-combobox
+                <v-select
                   v-model="category_selected"
                   :items="categories_names"
                   label="Filter by Category"
                   chips
                   clearable
                   hide-selected
-                ></v-combobox>
+                ></v-select>
                 <v-select
                   v-model="movement_type_selected"
                   :items="movement_types"
@@ -36,22 +37,22 @@
                   clearable
                   hide-selected
                 ></v-select>
-                <v-combobox
+                <v-select
                   v-model="movement_payment_type_selected"
                   :items="movement_payment_types"
                   label="Filter by Payment Type"
                   chips
                   clearable
                   hide-selected
-                ></v-combobox>
-                <v-combobox
+                ></v-select>
+                <v-select
                   v-model="transfer_email_selected"
                   :items="transfer_emails"
                   label="Filter by Transfer e-mail"
                   chips
                   clearable
                   hide-selected
-                ></v-combobox>
+                ></v-select>
                 <v-date-picker
                   mode="range"
                   v-model="range"
@@ -82,6 +83,8 @@
 </template>
 
 <script>
+import  {required,numeric} from 'vuelidate/lib/validators';
+
 export default {
   props: {
     activator: null,
@@ -182,6 +185,11 @@ export default {
     this.getMyMovementsIds();
     this.getEmailsFromMyMovements();
     this.clearDate();
+  },
+  validations: {
+    id_selected:{
+      numeric,
+    }       
   }
 };
 </script>
