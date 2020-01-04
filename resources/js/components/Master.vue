@@ -6,7 +6,7 @@
         app
       >
         <v-list dense>
-          <v-list-item v-if="!loggedIn" :to="{ name: 'home' }">
+          <v-list-item :to="{ name: 'home' }">
             <v-list-item-action>
               <v-icon>mdi-home</v-icon>
             </v-list-item-action>

@@ -72,8 +72,8 @@
           </v-container>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="green" @click="filter">Filter</v-btn>
-            <v-btn color="red" @click="cancelRegisterExpense">Cancel</v-btn>
+            <v-btn color="green" small @click="filter">Filter</v-btn>
+            <v-btn color="red" small @click="cancelRegisterExpense">Cancel</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>

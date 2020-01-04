@@ -10,13 +10,13 @@
         @clicked="movementsFiltered"
       />
       <UserExpenseMovement :activator="activator" @registed="movementRegisted" />
+    
+      <v-btn small v-if="isMovementsFiltered" class ="mx-1" color="red" dark @click="clearMovementsFiltered">Clear Filter</v-btn>
+      
     </div>
-    <v-flex v-if="isMovementsFiltered">
-      <v-btn color="red" dark @click="clearMovementsFiltered">Clear Filter</v-btn>
-    </v-flex>
     <v-snackbar v-model="noFilterAlert.value">
       {{ noFilterAlert.text }}
-      <v-btn color="red" text @click="noFilterAlert.value = false">Close</v-btn>
+      <v-btn color="red" @click="noFilterAlert.value = false">Close</v-btn>
     </v-snackbar>
     <v-data-table
       :headers="headers"
@@ -38,11 +38,12 @@
         <div v-else-if="item.type_payment === 'mb'">MB payment</div>
         <div v-else>-----</div>
       </template>
-      <template #item.actions="{item}">
-        <v-flex>
+      <template #item.actions="{item}" >
+        <v-row>
           <MovementDetails :movement="item" />
+          <!-- <v-spacer></v-spacer> -->
           <UserEditMovement :categories_names="categories_names" :movement="item" @edited="edited" />
-        </v-flex>
+        </v-row>
       </template>
     </v-data-table>
   </div>
@@ -63,7 +64,7 @@ export default {
       categories_names: [],
       noFilterAlert: {
         value: false,
-        text: "Não à movimentos para esses filtros"
+        text: "No movements with these filters!"
       },
       headers: [
           {

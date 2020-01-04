@@ -4,7 +4,7 @@
       <v-toolbar-title>Sign up</v-toolbar-title>
     </v-toolbar>
     <v-card-text background-color="dark">
-      <v-form id="check-login-form">
+      <v-form id="check-register-form">
         <v-text-field
           color="blue-grey darken-1"
           background-color="dark"
@@ -13,6 +13,7 @@
           type="name"
           id="name"
           v-model="name"
+          :rules="[v => !!v || 'Name is required', $v.name.alpha || 'Name can only contain alphabet characters']"
          />
         <v-text-field
           color="blue-grey darken-1"
@@ -21,7 +22,8 @@
           name="email"
           type="email"
           id="email"
-          v-model="email"
+          v-model="$v.email.$model"
+          :rules="[$v.email.required || 'Email is required']"
         />
         <v-text-field
           color="blue-grey darken-1"
@@ -29,8 +31,12 @@
           id="password"
           label="Password"
           name="password"
-          type="password"
           v-model="password"
+          :type="show1 ? 'text' : 'password'"
+          :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+          @click:append="show1 = !show1"
+          v-model.trim="$v.password.$model"
+          :rules="[$v.password.required || 'Password is required', $v.password.minLength || 'Password must be at least 3 characters!']"
         />
         <v-text-field
           v-if="!isLoggedIn"
@@ -41,6 +47,7 @@
           name="nif"
           type="nif"
           v-model="nif"
+          :rules="[$v.nif.required|| 'Nif required!', $v.nif.numeric|| 'Nif can only have digits!', $v.nif.minLength || 'Nif must have exactly 9 digits!', $v.nif.maxLength || 'Nif must have exactly 9 digits!']"
         />
         <v-select
           v-if="isLoggedIn"
@@ -73,12 +80,16 @@
       </v-form>
     </v-card-text>
     <v-card-actions class="justify-center">
-      <v-btn block  color="blue-grey darken-1" form="check-login-form" @click="register">Sign up</v-btn>
+      <v-btn block  color="blue-grey darken-1" form="check-register-form" @click="register">Sign up</v-btn>
     </v-card-actions>
   </v-card>
 </template> 
 
 <script>
+import { required, sameAs, minLength, maxLength, numeric, helpers,email } from 'vuelidate/lib/validators';
+
+const alpha = helpers.regex('alpha', /^[a-zA-Z ]*$/);
+
 export default {
     name: 'register',
   data: function() {
@@ -93,6 +104,9 @@ export default {
         role: '',
         roles: ['Administrator', 'Operator'],
         isLoggedIn: '',
+        show1: false,
+        show2: false,
+        valid: false,
     }
   },
   methods: {
@@ -130,9 +144,38 @@ export default {
             }
             this.clearInputs();
          })
-          .catch(error => {
-            console.log(error);
-          })
+        .catch(error => {
+            
+              if(error.response.data.errors.email){
+                this.$toast.error(error.response.data.errors.email[0], {
+                  position: "top-right ",
+                  timeout: 5000,
+                  closeOnClick: true,
+                  pauseOnFocusLoss: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  draggablePercent: 0.6,
+                  hideCloseButton: false,
+                  hideProgressBar: false,
+                  icon: true
+                });
+              }
+              if(error.response.data.errors.nif){
+                this.$toast.error("The nif has already been taken.", {
+                  position: "top-right",
+                  timeout: 5000,
+                  closeOnClick: true,
+                  pauseOnFocusLoss: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  draggablePercent: 0.6,
+                  hideCloseButton: false,
+                  hideProgressBar: false,
+                  icon: true
+                });
+              }
+            
+        })
       },
       onPickFile(){
       this.$refs.fileInput.click();
@@ -154,17 +197,29 @@ export default {
           this.isLoggedIn = true;
           console.log(this.role);
         }
-      },
-      clearInputs() {
-        this.name = '';
-        this.email = '';
-        this.password = '';
-        this.nif = '';
-        this.role = '';
-      }
+      },  
   },
   mounted() {
     this.isAuth();
+  },
+  validations: {
+    password: {
+      required,
+      minLength: minLength(3),
+    },
+    nif:{
+      required,
+      numeric,
+      minLength: minLength(9),
+      maxLength: maxLength(9),
+    },
+    name:{
+      alpha
+    },
+    email:{
+      required,
+      email,
+    }
   }
 };
 </script>

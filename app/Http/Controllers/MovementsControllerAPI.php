@@ -98,6 +98,10 @@ class MovementsControllerAPI extends Controller
             $wallet_transfer_id = Wallet::where('email', $request->senderEmail)->first();
         }
 
+        if($request->input('value') > 5000 || $request->input('value') < 0.01){
+            return response()->json(['message' => 'Valor tem que ser entre 0.01€ e 5000€!'], 404);
+        }
+        
         if($wallet){
             $movement = Movement::create([
                 'wallet_id' => $wallet->id,

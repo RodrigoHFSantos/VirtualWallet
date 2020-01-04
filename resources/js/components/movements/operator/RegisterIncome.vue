@@ -1,48 +1,46 @@
 <template>
-     <v-app id="inspire">
-    <v-content>
-      <v-container class="fill-height" fluid>
-        <v-row align="center" justify="center">
-          <v-col cols="12" sm="8" md="4">
-            <v-card class="elevation-12">
-              <v-toolbar color="primary" dark flat>
-                <v-toolbar-title>Register an Income</v-toolbar-title>
-                <v-spacer />
-              </v-toolbar>
-              <v-card-text>
-                <v-form id="check-login-form">
-                    <p v-if="errors.length">
-                        <b>Please correct the following error(s):</b>
-                        <ul>
-                            <li v-for="error in errors">{{ error }}</li>
-                        </ul>
-                    </p>
-
+    <v-card class="elevation-12 card">
+        <v-toolbar color="blue-grey darken-4" flat>
+            <v-toolbar-title>Register Income</v-toolbar-title>
+        </v-toolbar>
+            <v-card-text background-color="dark">
+                <v-form id="check-registerIncome-form" enctype='multipart/form-data' v-model="valid" lazy-validation>
                     <v-text-field
+                        color="blue-grey darken-1"
+                        background-color="dark"
                         label="Email"
                         name="email"
                         type="email"
                         id="email"
-                        v-model="data.email"
+                        v-model.trim="$v.data.email.$model"
+                        :rules="[$v.data.email.required || 'Name is required']"
                     />
 
                     <v-text-field
+                        color="blue-grey darken-1"
+                        background-color="dark"
                         id="value"
                         label="Value (From 0,01€ up to 5000,00€)"
                         name="value"
                         type="value"
-                        v-model="data.value"
+                        v-model="$v.data.value.$model"
+                        :rules="[$v.data.value.required || 'Value is required', $v.data.value.numeric || 'Value can only have digits!']"
                     />
                      <v-flex xs12 sm6 d-flex>
                         <v-select
+                            color="blue-grey darken-1"
+                            background-color="dark"
                             :items="items"
                             label="Type of Payment"
                             outline
                             v-model="typeOfPayment"
+                            :rules="[inputRules || 'Type of Payment is required']"
                         ></v-select>
                     </v-flex>
 
                     <v-text-field
+                        color="blue-grey darken-1"
+                        background-color="dark"
                         v-if="ibanActive"
                         id="iban"
                         label="IBAN (2 capital letters followed by 23 digits)"
@@ -52,28 +50,27 @@
                     />
 
                     <v-text-field
+                        color="blue-grey darken-1"
+                        background-color="dark"
                         id="source_description"
                         label="Source Description"
                         name="source_description"
                         type="source_description"
-                        v-model="data.source_description"
+                        v-model="$v.data.source_description.$model"
+                        :rules="[$v.data.source_description.required || 'Description is required']"
                     />
                 <br>
                 </v-form>
-              </v-card-text>
-              <v-card-actions>
-                <v-spacer />
-                <v-btn color="primary" form="check-login-form" @click="registerIncome">Register Income</v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-col>
-        </v-row>
-      </v-container>
-    </v-content>
-  </v-app>
+            </v-card-text>
+            <v-card-actions>
+                <v-btn block  color="blue-grey darken-1" form="check-registerIncome-form" @click="registerIncome">Register Income</v-btn>
+            </v-card-actions>
+    </v-card>
 </template>
 
 <script>
+import  {required,numeric} from 'vuelidate/lib/validators';
+
   export default {
     name: 'registerIncome',
 
@@ -87,10 +84,25 @@
                 iban: null,
             },
             items: ['Cash', 'Bank Transfer'],
-            typeOfPayment: null,
+            typeOfPayment: 'Cash',
             iban_active: false,
-            errors: []
+            errors: [],
+            valid: false,
         }
+    },
+    validations: {
+        data: {
+            email: {
+                required,
+            },
+            value: {
+                required,
+                numeric,
+            },
+            source_description: {
+                required
+            },
+        }      
     },
     computed: {
      ibanActive: function(){
@@ -104,7 +116,6 @@
     methods: {
         registerIncome: function() {
             this.errors = [];
-            if(this.checkForm()){
                 axios.post('api/movements/register/income', this.data)
                 .then(response => {
                     this.data.email = '';
@@ -112,61 +123,64 @@
                     this.data.type_payment = '';
                     this.data.source_description = '';
                     this.data.iban = '';
-                    // this.$router.push({ name: "home" });
+                    
+                    this.$toast.success("Success", {
+                            position: "top-right ",
+                            timeout: 5000,
+                            closeOnClick: true,
+                            pauseOnFocusLoss: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                            draggablePercent: 0.6,
+                            hideCloseButton: false,
+                            hideProgressBar: false,
+                            icon: true
+                    });
+                    this.$router.push({ name: "home" });
                 })
                 .catch(error => {
-                    console.log(error.response.data.message);
-                })
-            }
-        },
-        checkForm: function () {
-            if (this.data.email && this.data.value && this.typeOfPayment && this.data.source_description) {
-                if(0>=this.data.value>5000){
-                    this.errors.push('Value must be between 0 and 5000.')
-                }else{
-                    if(this.typeOfPayment == 'Bank Transfer'){
-                        this.data.type_payment = 'mb';
-                        if(this.data.iban){
-                            return true;
-                        }
+                    console.log(error);
+                    if(error.response.status == 404){
+                        this.$toast.error(error.response.data.message, {
+                            position: "top-right ",
+                            timeout: 5000,
+                            closeOnClick: true,
+                            pauseOnFocusLoss: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                            draggablePercent: 0.6,
+                            hideCloseButton: false,
+                            hideProgressBar: false,
+                            icon: true
+                        });
                     }
-                    this.data.type_payment = 'c';
-                    return true;
-                }
-                
-            }
-
-            if (!this.data.email) {
-                this.errors.push('Email required.');
-            }
-
-            if (!this.data.value) {
-                this.errors.push('Value required.');
-            }
-
-            // if(0>=this.data.value>5000){
-            //     this.errors.push('Value must be between 0 and 5000.')
-            // }
-
-            if (!this.typeOfPayment) {
-                this.errors.push('Type of payment required.');
-            }
-
-            if(this.typeOfPayment == 'Bank Transfer'){
-                if(!this.data.iban){
-                    this.errors.push('IBAN requeired.');
-                }
-            }
-
-            if(!this.data.source_description) {
-                this.errors.push('Source Descritpion required.');
-            }
+                })
         },
-        mounted() {
+        inputRules: function(value){
+            if(value == 'Cash' || value == 'Bank Transfer'){
+                return true;
+            }
+
+            return false;
+        },
+    },
+    mounted() {
             if(this.$store.state.token == ''){
 				this.$router.push({name: 'login'})
 			}
-        }
-    }
-  }
+    },
+};
 </script>
+
+<style lang="scss" scoped>
+
+  .card{
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		margin-right: -50%;
+		transform: translate(-50%, -50%);
+    width: 500px;
+  }
+
+</style>

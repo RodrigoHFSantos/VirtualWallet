@@ -3,7 +3,7 @@
     <div class="text-center">
       <v-dialog v-model="dialog" width="500">
         <template v-slot:activator="{ on }">
-          <v-btn small class="info" dark width="50" v-on="on" @click.stop="dialog = true">Edit</v-btn>
+          <v-icon small dark  style="font-size:20px;color:red" width="50" v-on="on" @click.stop="dialog = true">mdi-pencil</v-icon>
         </template>
         <v-card  class="mx-auto" max-height="450px">
           <v-card-title class="blue-grey darken-4 cardTitle" primary-title>Edit Movement</v-card-title>
@@ -22,7 +22,7 @@
             </div>
 
             <div>
-              <p class="label" text-color="blue-grey darken-4">Descrição</p>
+              <p class="label" text-color="blue-grey darken-4">Description</p>
               <textarea class="textArea" v-model="description_edit" placeholder="Movement Description"></textarea>
             </div>
           </v-card-text>
@@ -31,8 +31,8 @@
 
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="green" text @click="editMovement">Edit</v-btn>
-            <v-btn color="primary" text @click="close">Close</v-btn>
+            <v-btn color="blue" small @click="editMovement">Edit</v-btn>
+            <v-btn color="red" small @click="close">Close</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>

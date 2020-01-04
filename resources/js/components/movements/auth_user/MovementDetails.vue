@@ -3,7 +3,7 @@
     <div class="text-center">
       <v-dialog v-model="dialog" width="500">
         <template v-slot:activator="{ on }">
-          <v-btn small class="info" dark v-on="on" @click="showDetails(movement.id)">Details</v-btn>
+          <v-icon class="mr-2" style="font-size:20px;color:#40C4FF" dark v-on="on" @click="showDetails(movement.id)">mdi-details</v-icon>
         </template>
         <v-card class="mx-auto" max-height="450px">
           <v-card-title class="blue-grey darken-4 cardTitle" primary-title>Details</v-card-title>
@@ -51,7 +51,7 @@
 
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="primary" text @click="dialog = false">Close</v-btn>
+            <v-btn color="primary" @click="dialog = false">Close</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>

@@ -43,9 +43,9 @@ const routes = [
         path: '/',
         name: 'home',
         component: landingpage,
-        meta: {
-            requiresVisitor: true,
-        }
+        // meta: {
+        //     requiresVisitor: true,
+        // }
     },
 
     {

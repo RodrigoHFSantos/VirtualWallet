@@ -14,6 +14,15 @@ import store from './store/global-store';
 import Vuelidate from 'vuelidate';
 import VCalendar from 'v-calendar';
 import VueSocketIO from "vue-socket.io";
+import Toasted from 'vue-toasted';
+import Toast from "vue-toastification";
+import "vue-toastification/dist/index.css";
+
+Vue.use(Toast, {
+  transition: "Vue-Toastification__bounce",
+  maxToasts: 20,
+  newestOnTop: true
+});
 
 Vue.use(
     VCalendar, {componentPrefix: 'vc'},
@@ -21,16 +30,17 @@ Vue.use(
 
 Vue.use(VueRouter);
 Vue.use(Vuelidate);
+Vue.use(Toasted)  
 
 const router = new VueRouter({
     routes,
     // history = true //era suposto tirar o # do url mas nao funciona
 })
 
-Vue.use(new VueSocketIO({
-  debug: true,
-  connection: 'http://10.200.0.203'
-})); 
+// Vue.use(new VueSocketIO({
+//   debug: true,
+//   connection: 'http://10.200.0.203'
+// })); 
  
 
 

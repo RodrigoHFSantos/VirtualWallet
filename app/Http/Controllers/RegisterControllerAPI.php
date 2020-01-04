@@ -36,7 +36,7 @@ class RegisterControllerAPI extends Controller
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:3',
             // 'password_confirmation' => 'required|confirmed',
-            'nif' => 'nullable|digits:9'
+            'nif' => 'nullable|digits:9|unique:users'
         ]);
 
         return User::create([
