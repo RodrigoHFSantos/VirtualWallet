@@ -12,8 +12,8 @@
                         name="email"
                         type="email"
                         id="email"
-                        v-model.trim="$v.data.email.$model"
-                        :rules="[$v.data.email.required || 'Name is required']"
+                        v-model.trim="data.email"
+                        :rules="[$v.data.email.required || 'Email is required']"
                     />
 
                     <v-text-field
@@ -23,7 +23,7 @@
                         label="Value (From 0,01€ up to 5000,00€)"
                         name="value"
                         type="value"
-                        v-model="$v.data.value.$model"
+                        v-model="data.value"
                         :rules="[$v.data.value.required || 'Value is required', $v.data.value.numeric || 'Value can only have digits!']"
                     />
                      <v-flex xs12 sm6 d-flex>
@@ -56,7 +56,7 @@
                         label="Source Description"
                         name="source_description"
                         type="source_description"
-                        v-model="$v.data.source_description.$model"
+                        v-model="data.source_description"
                         :rules="[$v.data.source_description.required || 'Description is required']"
                     />
                 <br>
@@ -77,11 +77,11 @@ import  {required,numeric} from 'vuelidate/lib/validators';
     data: function() {
         return {
             data: {
-                email: null,
-                value: null,
-                type_payment: null,
-                source_description: null,
-                iban: null,
+                email: "",
+                value: "",
+                type_payment: "",
+                source_description: "",
+                iban: "",
             },
             items: ['Cash', 'Bank Transfer'],
             typeOfPayment: 'Cash',
@@ -116,14 +116,10 @@ import  {required,numeric} from 'vuelidate/lib/validators';
     methods: {
         registerIncome: function() {
             this.errors = [];
+                console.log(this.data);
                 axios.post('api/movements/register/income', this.data)
                 .then(response => {
-                    this.data.email = '';
-                    this.data.value = '';
-                    this.data.type_payment = '';
-                    this.data.source_description = '';
-                    this.data.iban = '';
-                    
+                    console.log(this.data);
                     this.$toast.success("Success", {
                             position: "top-right ",
                             timeout: 5000,

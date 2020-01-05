@@ -38,6 +38,10 @@
         <div v-else-if="item.type_payment === 'mb'">MB payment</div>
         <div v-else>-----</div>
       </template>
+      <template #item.category_name="{item}">
+        <div v-if="item.category_name === null">-----</div>
+        <div v-else>{{item.category_name}}</div>
+      </template>
       <template #item.actions="{item}" >
         <v-row>
           <MovementDetails :movement="item" />
@@ -89,6 +93,7 @@ export default {
     getMovements: function() {
       axios.get("api/wallet/movements/me").then(response => {
         this.movements = response.data;
+        console.log(this.movements);
       });
     },
      getAllCategoriesNames() {
@@ -101,18 +106,18 @@ export default {
           console.log(error);
         });
     },
-     getAllCategoriesNames() {
-      axios
-        .get("api/categories/names")
-        .then(response => {
-          response.data.map(category =>
-            this.categories_names.push(category.name)
-          );
-        })
-        .catch(error => {
-          console.log(error);
-        });
-      },
+    //  getAllCategoriesNames() {
+    //   axios
+    //     .get("api/categories/names")
+    //     .then(response => {
+    //       response.data.map(category =>
+    //         this.categories_names.push(category.name)
+    //       );
+    //     })
+    //     .catch(error => {
+    //       console.log(error);
+    //     });
+    //   },
       movementsFiltered: function(value) {
         if (value.length == 0) {
           this.isMovementsFiltered = false;

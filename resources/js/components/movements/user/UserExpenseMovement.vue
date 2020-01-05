@@ -37,6 +37,7 @@
                   name="iban"
                   type="value"
                   v-model="data.iban"
+                  :rules="[$v.data.iban.required || 'Iban is required']"
                 />
                 <v-text-field
                   v-if="data.movement_payment_type_selected == 'Multibanco/MB payment'"
@@ -44,7 +45,8 @@
                   label="MB Code"
                   name="mb_code"
                   type="value"
-                  v-model="data.mb_code"
+                  v-model="data.mb_code "
+                  :rules="[$v.data.mb_code.required || 'MB code is required', $v.data.mb_code.numeric || 'MB code can only have digits!']"
                 />
                 <v-text-field
                   v-if="data.movement_payment_type_selected == 'Multibanco/MB payment'"
@@ -53,6 +55,7 @@
                   name="mb_reference"
                   type="value"
                   v-model="data.mb_reference"
+                  :rules="[$v.data.mb_reference.required || 'MB reference is required', $v.data.mb_reference.numeric || 'MB reference can only have digits!']"
                 />
                 <v-text-field
                   v-if="data.type_movement_selected == 'Transfer'"
@@ -61,6 +64,7 @@
                   name="email_destination"
                   type="email_destination"
                   v-model="data.email_destination"
+                  :rules="[$v.data.email_destination.required || 'Email is required']"
                 />
                 <v-text-field
                   v-if="data.type_movement_selected == 'Transfer'"
@@ -69,6 +73,7 @@
                   name="source_description"
                   type="source_description"
                   v-model="data.source_description"
+                  :rules="[$v.data.source_description.required || 'Source description is required']"
                 />
                 <v-text-field
                   id="value"
@@ -76,6 +81,7 @@
                   name="value"
                   type="value"
                   v-model="data.value"
+                  :rules="[$v.data.value.required || 'Value is required', $v.data.value.numeric || 'Value can only have digits!', $v.data.value.between || 'Value between 0,01€ up to 5000,00€']"
                 />
                 <v-select
                   v-model="data.category_selected"
@@ -91,6 +97,7 @@
                   name="description"
                   type="description"
                   v-model="data.description"
+                  :rules="[$v.data.description.required || 'Description is required']"
                 />
               </v-col>
             </v-row>
@@ -107,6 +114,9 @@
 </template>
 
 <script>
+
+import  {required,numeric, between,minLength, maxLength} from 'vuelidate/lib/validators';
+
 export default {
   props: {
     movement: null
@@ -134,6 +144,37 @@ export default {
       routeMovementList: false,
     };
   },
+  validations: {
+        data: {
+            value: {
+                required,
+                numeric,
+                between: between(0.01, 5000)
+            },
+            mb_code: {
+              required,
+              numeric,
+            },
+            iban: {
+              required,
+              minLength: minLength(24),
+              maxLength: maxLength(26),
+            },
+            description:{
+              required,
+            },
+            email_destination:{
+              required,
+            },
+            source_description:{
+              required,
+            },
+            mb_reference:{
+              required,
+              numeric
+            },
+        }      
+  },
   methods: {
     registerExpense() {
       axios
@@ -142,10 +183,37 @@ export default {
           this.clearAllFields();
           this.dialog = false;
           this.$emit('registed');
+
+          this.$toast.success("Success", {
+            position: "top-right ",
+            timeout: 5000,
+            closeOnClick: true,
+            pauseOnFocusLoss: true,
+            pauseOnHover: true,
+            draggable: true,
+            draggablePercent: 0.6,
+            hideCloseButton: false,
+            hideProgressBar: false,
+            icon: true
+          });
         })
         .catch(error => {
           console.log(error.response.data.message);
-        });
+          if(error.response.status == 404){
+            this.$toast.error(error.response.data.message, {
+              position: "top-right ",
+              timeout: 5000,
+              closeOnClick: true,
+              pauseOnFocusLoss: true,
+              pauseOnHover: true,
+              draggable: true,
+              draggablePercent: 0.6,
+              hideCloseButton: false,
+              hideProgressBar: false,
+              icon: true
+            });
+          }
+        })
     },
     getAllCategoriesNames() {
       axios

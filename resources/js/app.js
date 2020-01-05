@@ -17,6 +17,7 @@ import VueSocketIO from "vue-socket.io";
 import Toasted from 'vue-toasted';
 import Toast from "vue-toastification";
 import "vue-toastification/dist/index.css";
+import * as VeeValidate from 'vee-validate'
 
 Vue.use(Toast, {
   transition: "Vue-Toastification__bounce",
@@ -24,18 +25,24 @@ Vue.use(Toast, {
   newestOnTop: true
 });
 
+Vue.directive('VeeValidate', VeeValidate)
+Vue.use(VeeValidate, {
+  inject: true
+})
+
 Vue.use(
     VCalendar, {componentPrefix: 'vc'},
 );
 
 Vue.use(VueRouter);
 Vue.use(Vuelidate);
-Vue.use(Toasted)  
+Vue.use(Toasted);
 
 const router = new VueRouter({
     routes,
     // history = true //era suposto tirar o # do url mas nao funciona
 })
+
 
 // Vue.use(new VueSocketIO({
 //   debug: true,

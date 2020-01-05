@@ -40,6 +40,10 @@ class MovementsControllerAPI extends Controller
             }
         }
 
+        if($request->input('value') > 5000 || $request->input('value') < 0.01){
+            return response()->json(['message' => 'Valor tem que ser entre 0.01€ e 5000€!'], 404);
+        }
+
         $payment_type = $request->input('movement_payment_type_selected');
         if($request->has('movement_payment_type_selected') && $request->input('movement_payment_type_selected') !== 'null'){
             if($request->input('movement_payment_type_selected') === 'Bank Transfer'){
@@ -87,6 +91,7 @@ class MovementsControllerAPI extends Controller
 
     public function registerIncome(Request $request)
     {   
+        
         if($request->has('email_destination')){
             $wallet = Wallet::where('email', $request->email_destination)->first();
             $transfer = 1;
@@ -117,9 +122,11 @@ class MovementsControllerAPI extends Controller
                 'start_balance' => $wallet->balance,
                 'end_balance' => $wallet->balance + $request->value,
             ]);
+            
             $wallet->balance += $request->value;
-            $wallet->save();
-            return $movement;
+            Wallet::where('email', $wallet->email)->update(['balance' => $wallet->balance]);
+            // $wallet->save();
+            // return $movement;
         }else{
             return response()->json(['message' => 'Não existe uma wallet com este email!'], 404);
         }
@@ -144,12 +151,15 @@ class MovementsControllerAPI extends Controller
     public function userMovements()
     {
         $user = Auth::user(); 
+
         $wallet = Wallet::where('email', $user->email)->first();
+
         $movements = Movement::where('wallet_id', $wallet->id)
-        ->join('categories', 'movements.category_id', '=', 'categories.id')
+        ->leftJoin('categories', 'movements.category_id', '=', 'categories.id')
         ->leftJoin('wallets', 'movements.transfer_wallet_id', '=', 'wallets.id')
         ->orderBy('movements.date', 'desc')
         ->select('movements.*', 'wallets.email AS transfer_wallet', 'categories.name AS category_name')->get();
+
         return $movements;
     }
     
