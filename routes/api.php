@@ -45,6 +45,7 @@ Route::middleware('auth:api')->get('movements/users/filter', 'MovementsControlle
 Route::middleware('auth:api')->get('movements/users/emails', 'MovementsControllerAPI@emailsFromMyMovements');
 Route::middleware('auth:api')->post('movements/users/register/expense', 'MovementsControllerAPI@registerExpense');
 Route::middleware('auth:api')->get('movements/details/photo', 'MovementsControllerAPI@photoMovementTransfer');
+Route::middleware('auth:api')->put('movements/users/edit', 'MovementsControllerAPI@editMovement');
 
 //routes for wallet
 Route::middleware('auth:api')->get('wallet/me','WalletControllerAPI@currentBalance');

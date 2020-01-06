@@ -2329,6 +2329,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -3700,8 +3703,36 @@ __webpack_require__.r(__webpack_exports__);
         _this.$emit('edited', response);
 
         _this.close();
+
+        _this.$toast.success("Movement edited!", {
+          position: "top-right ",
+          timeout: 5000,
+          closeOnClick: true,
+          pauseOnFocusLoss: true,
+          pauseOnHover: true,
+          draggable: true,
+          draggablePercent: 0.6,
+          hideCloseButton: false,
+          hideProgressBar: false,
+          icon: true
+        });
       })["catch"](function (error) {
         console.log(error);
+
+        if (error.response.status == 404) {
+          _this.$toast.error(error.response.data.message, {
+            position: "top-right ",
+            timeout: 5000,
+            closeOnClick: true,
+            pauseOnFocusLoss: true,
+            pauseOnHover: true,
+            draggable: true,
+            draggablePercent: 0.6,
+            hideCloseButton: false,
+            hideProgressBar: false,
+            icon: true
+          });
+        }
       });
     },
     close: function close() {
@@ -26483,6 +26514,10 @@ var render = function() {
                         ? _c("div", [_vm._v("Empty")])
                         : _vm._e()
                     ])
+                  : _vm._e(),
+                _vm._v(" "),
+                item.type === "a" || item.type === "o"
+                  ? _c("div", [_c("div", [_vm._v("-----")])])
                   : _vm._e()
               ]
             }
@@ -26533,7 +26568,7 @@ var render = function() {
                                             }
                                           }
                                         },
-                                        [_vm._v("Deactivate!")]
+                                        [_vm._v("Desactivate!")]
                                       )
                                     ],
                                     1
@@ -28045,7 +28080,7 @@ var render = function() {
                     [
                       _c("p", { staticClass: "label" }, [_vm._v("Category")]),
                       _vm._v(" "),
-                      _c("v-combobox", {
+                      _c("v-select", {
                         attrs: {
                           items: _vm.categories_names,
                           label: "Edit Category:",

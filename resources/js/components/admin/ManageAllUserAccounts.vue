@@ -38,6 +38,9 @@
           <div v-if="item.balance > 0">Has Money</div>
           <div v-if="item.balance == 0">Empty</div>
         </div>
+        <div v-if="item.type === 'a' || item.type === 'o'">
+          <div>-----</div>
+        </div>
       </template>
       <template #item.photo="{item}">
         <div v-if="item.photo == 'storage/fotos/null'">No Photo</div>
@@ -50,7 +53,7 @@
           <div v-if="item.type === 'u'">
             <div v-if="item.balance == 0">
               <div v-if="item.active == 1">
-                <v-btn color="red" @click="activateOrDesactivate(item.id, item.active)">Deactivate!</v-btn>
+                <v-btn color="red" @click="activateOrDesactivate(item.id, item.active)">Desactivate!</v-btn>
               </div>
             </div>
               <div v-if="item.active == 0">

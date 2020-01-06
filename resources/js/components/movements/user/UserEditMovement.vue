@@ -11,14 +11,14 @@
           <v-card-text class="text--primary pt-4">
             <div>
               <p class="label">Category</p>
-              <v-combobox
+              <v-select
                   v-model="category_edit"
                   :items="categories_names"
                   label="Edit Category:"
                   chips
                   clearable
                   hide-selected
-                ></v-combobox>
+                ></v-select>
             </div>
 
             <div>
@@ -63,9 +63,35 @@ export default {
       .then(response => {
         this.$emit('edited', response);
         this.close();
+        this.$toast.success("Movement edited!", {
+            position: "top-right ",
+            timeout: 5000,
+            closeOnClick: true,
+            pauseOnFocusLoss: true,
+            pauseOnHover: true,
+            draggable: true,
+            draggablePercent: 0.6,
+            hideCloseButton: false,
+            hideProgressBar: false,
+            icon: true
+           });
       })
       .catch(error => {
         console.log(error);
+        if(error.response.status == 404){
+          this.$toast.error(error.response.data.message, {
+            position: "top-right ",
+            timeout: 5000,
+            closeOnClick: true,
+            pauseOnFocusLoss: true,
+            pauseOnHover: true,
+            draggable: true,
+            draggablePercent: 0.6,
+            hideCloseButton: false,
+            hideProgressBar: false,
+            icon: true
+           });
+        }
       })
     },
     close() {
