@@ -5,10 +5,6 @@
 
     <h4>Number of users per type</h4>
     <line-chart :chart-data="datacollectionPerUserTypes" :height="180"></line-chart>
-    <line-chart :chart-data="datacollectionPerUserTypes" :height="100"></line-chart>
-
-    <h4>Categories Used</h4>
-    <line-chart :chart-data="datacollectionCategoriesUsed" :height="100"></line-chart>
   </div>
 </template>
 
