@@ -83,7 +83,7 @@ export default {
         ],
         datasets: [
           {
-            label: "Movements",
+            label: "Users",
             backgroundColor: "#FF0066",
             data: this.numUsers
           }
