@@ -5,6 +5,9 @@
   
     <h4>Number of users per type</h4>
     <line-chart :chart-data="datacollectionPerUserTypes" :height="100"></line-chart>
+
+    <h4>Categories Used</h4>
+    <line-chart :chart-data="datacollectionCategoriesUsed" :height="100"></line-chart>
   </div>
 </template>
 
@@ -22,22 +25,21 @@ export default {
         datacollectionPerUserTypes: {},
         numUsers: [],
         movementsPerMonth: [],
-        datacollectionPerMonth: {}
+        datacollectionPerMonth: {},
+        categories_names: [],
+        datacollectionCategoriesUsed: {},
     };
   },
 
   methods: {
     getMovementsPerMonth() {
       axios
-        .get("api/movements/user/statistics/movements-per-month")
+        .get("api/movements/admin/statistics/movements-per-month")
         .then(response => {
           this.objToArray = Object.values(response.data);
-          // const objToArray = response.data;
-
           this.objToArray.forEach(element => {
             this.movementsPerMonth.push(element.length);
           });
-          console.log(this.movementsPerMonth);
           this.datacollectionPerMonth = {
             labels: [
               "Janeiro",
@@ -93,16 +95,47 @@ export default {
         .catch(error => {
           console.log(error);
         });
+    },
+    getCategoriesUsed(){
+        axios.get("api/categories/names")
+        .then(response => {
+            response.data.map(category => this.categories_names.push(category.name));
+        });
+
+        axios.get("api/movements/admin/statistics/users-created-per-year")
+        .then(response => {
+            this.objToArray = Object.values(response.data);
+            this.objToArray.forEach(element => {
+                this.numUsers.push(element);
+            });
+            console.log(response.data);
+
+            // this.datacollectionCategoriesUsed = {
+            // labels: [
+            //     "User",
+            //     "Operator",
+            //     "Admin",
+            // ],
+            // datasets: [
+            //     {
+            //         label: "Categories Used",
+            //         backgroundColor: "#FF0066",
+            //         data: this.numUsers
+            //     }
+            // ]
+            // };
+        })
     }
   },
 
   mounted() {
     try {
-      this.getMovementsPerMonth();
+        this.getMovementsPerMonth();
+        this.getCategoriesUsed();
         this.getUsersPerType();
-      if (this.$store.state.token == "") {
-        this.$router.push({ name: "login" });
-      }
+        if (this.$store.state.token == "") {
+            this.$router.push({ name: "login" });
+        }
     } catch (error) {
       console.log(error);
     }

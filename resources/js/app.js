@@ -155,12 +155,12 @@ const app = new Vue({
             'Message "' + dataFromServer[0] + '" sent from "' + name + '"'
         );
     },
-    privateMessage_unavailable(destUser) {
+      privateMessage_unavailable(destUser) {
         this.$toasted.error(
             'User "' + destUser.name + '" is not available'
         );
     },
-    privateMessage_sent(dataFromServer) {
+      privateMessage_sent(dataFromServer) {
         this.$toasted.success(
             'Message "' +
                 dataFromServer[0] +
@@ -169,30 +169,6 @@ const app = new Vue({
                 '"'
         );
     },
-      income_movement_made(){
-        this.$toasted.show("You have received an Income Movement");
-      },
-      transfer_movement_made(){
-        this.$toasted.show("A Transfer Movement was made to your wallet");
-      },
-      // notify_by_email(email){
-      //   if(email){
-      //     console.log("enviar email para "+email)
-      //     let auxType = "";
-      //     if(this.$store.state.user.type == 'u'){
-      //       auxType = "Income";
-      //     }else{
-      //       auxType = "Transfer";
-      //     }
-      //     axios.post('/api/sendEmail', {to: email, typeEmail: auxType})
-      //     .then(response => {          
-      //       this.$toasted.success(response.data.success);
-      //     })
-      //     .catch(response => {
-      //         this.$toasted.error("Unable to notify "+email);
-      //     });
-      //   }
-      // },
     },
     created() {
       this.$store.commit('loadTokenAndUserFromSession');

@@ -119,6 +119,17 @@ const alpha = helpers.regex('alpha', /^[A-Z]{2}[0-9]{23}/);
      }
    },
     methods: {
+        sendEmail: function(){
+            axios.post('api/user/send-email', {
+                value: this.data.value,
+                email: this.data.email,
+                description: this.data.source_description,
+            })
+            .then(response => {
+                console.log(response);
+                console.log("enviei email");
+            })
+        },
         registerIncome: function() {
             this.errors = [];
                 console.log(this.data);
@@ -138,10 +149,11 @@ const alpha = helpers.regex('alpha', /^[A-Z]{2}[0-9]{23}/);
                             hideProgressBar: false,
                             icon: true
                     });
-                    console.log(wallet_id);
-                    console.log(this.data.email);
-                    console.log(this.$store.state.user.id);
-                    this.$socket.emit('income_movement',wallet_id, this.data.email,this.$store.state.user.id);
+
+                    axios.get('api/user/getByEmail', { params: { email: this.data.email}})
+                    .then(response => {
+                        this.$socket.emit('privateMessage', 'Income Added!', this.$store.state.user, response.data);
+                    })
                     this.$router.push({ name: "home" });
                 })
                 .catch(error => {
@@ -175,6 +187,12 @@ const alpha = helpers.regex('alpha', /^[A-Z]{2}[0-9]{23}/);
 				this.$router.push({name: 'login'})
 			}
     },
+    sockets: {
+        privateMessage_unavailable(destUser) {
+            this.sendEmail();
+            console.log("adwadawd");
+        }
+    }
 };
 </script>
 

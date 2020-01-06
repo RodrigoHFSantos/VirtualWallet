@@ -182,10 +182,12 @@ export default {
       axios
         .post("api/movements/users/register/expense", this.data)
         .then(response => {
-          this.clearAllFields();
           this.dialog = false;
           this.$emit('registed');
-          this.$socket.emit('transfer_movement',response.data.destinationID, this.movement.email,this.$store.state.user.id);
+          axios.get('api/user/getByEmail', { params: { email: this.data.email_destination}})
+          .then(response => {
+             this.$socket.emit('privateMessage', 'Transfer Added!', this.$store.state.user, response.data);
+           })
 
           this.$toast.success("Success", {
             position: "top-right ",
@@ -199,6 +201,7 @@ export default {
             hideProgressBar: false,
             icon: true
           });
+          this.clearAllFields();
         })
         .catch(error => {
           console.log(error.response.data.message);
@@ -253,7 +256,18 @@ export default {
     cancelRegisterExpense() {
       this.clearAllFields();
       this.dialog = false;
-    }
+    },
+     sendEmail: function(){
+            axios.post('api/user/send-email', {
+                value: this.data.value,
+                email: this.data.email_destination,
+                description: this.data.source_description,
+            })
+            .then(response => {
+                console.log(response);
+                console.log("enviei email");
+            })
+        },
   },
   mounted() {
     this.getAllCategoriesNames();
@@ -261,6 +275,12 @@ export default {
     if(this.$store.state.token == ''){
 			this.$router.push({name: 'login'})
 		}
-  }
+  },
+  sockets: {
+        privateMessage_unavailable(destUser) {
+            this.sendEmail();
+            console.log("adwadawd");
+        }
+    },
 };
 </script>

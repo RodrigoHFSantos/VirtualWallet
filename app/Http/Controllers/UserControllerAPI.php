@@ -7,10 +7,15 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
+use Illuminate\Support\Facades\Mail;
 use DB;
 
 class UserControllerAPI extends Controller
 {
+
+    public function getUserByEmail(Request $request){
+        return User::where('email', $request->input('email'))->first();
+    }
     public function removeUser(Request $request){
         if(User::where('email', $request->input('email'))->delete()){
             return response()->json(['message' => 'User deleted!'], 200);
@@ -119,7 +124,6 @@ class UserControllerAPI extends Controller
             ]);
         }
     	
-
     	$request->validate([
             'name' => 'required|string|max:255',
             'password' => 'required|string|min:3',
@@ -134,5 +138,19 @@ class UserControllerAPI extends Controller
 
         return User::where('id', $request->id)->first();
 
-	}
+    }
+    
+    public function sendEmail(Request $request)
+    {
+        $title = ('Value and Description');
+        $content = $request->value . ' ' . $request->description;
+        $email = $request->email;
+
+        Mail::send("email", ['title' => $title, 'content' => $content], function ($message) use ($email) {
+            $message->subject('VirtualWallet - Movement received');
+            $message->to($email);
+        });
+
+        return response()->json(['message' => 'Email sent to user']);
+    }
 }

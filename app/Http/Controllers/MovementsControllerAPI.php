@@ -13,9 +13,12 @@ use App\Http\Resources\Resource;
 
 class MovementsControllerAPI extends Controller
 {
-
-    public function numberOfCategoriesUsed(){
-        
+    public function usersCreatedPerYear(){
+        $users[0] = DB::table('users')->select('id')->whereYear('created_at', '=', 2017)->count();
+        $users[1] = DB::table('users')->select('id')->whereYear('created_at', '=', 2018)->count();
+        $users[2] = DB::table('users')->select('id')->whereYear('created_at', '=', 2019)->count();
+        $users[3] = DB::table('users')->select('id')->whereYear('created_at', '=', 2020)->count();
+        return $users;
     }
 
     public function movementsPerMonth(){

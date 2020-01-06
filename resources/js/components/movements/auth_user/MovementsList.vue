@@ -93,7 +93,6 @@ export default {
     getMovements: function() {
       axios.get("api/wallet/movements/me").then(response => {
         this.movements = response.data;
-        console.log(this.movements);
       });
     },
      getAllCategoriesNames() {
@@ -106,18 +105,6 @@ export default {
           console.log(error);
         });
     },
-    //  getAllCategoriesNames() {
-    //   axios
-    //     .get("api/categories/names")
-    //     .then(response => {
-    //       response.data.map(category =>
-    //         this.categories_names.push(category.name)
-    //       );
-    //     })
-    //     .catch(error => {
-    //       console.log(error);
-    //     });
-    //   },
       movementsFiltered: function(value) {
         if (value.length == 0) {
           this.isMovementsFiltered = false;
@@ -138,14 +125,7 @@ export default {
         // console.log(movement_edited);
         if(movement_edited){
           this.getMovements();
-        }
-        // altera apenas o movimento que foi editado em vez de ir buscar todos os movimentos 
-        // this.movements.forEach(movement => {
-        //   if(movement.id == movement_edited.data.id){
-        //     movement.category_id = movement_edited.data.category_id;
-        //     movement.description = movement_edited.data.description;
-        //   }
-        // });  
+        } 
       },
     },
     mounted() {
@@ -154,6 +134,14 @@ export default {
       if(this.$store.state.token == ''){
 				this.$router.push({name: 'login'})
 			}
+    },
+   sockets: {
+        privateMessage() {
+            this.$toasted.success(
+                "Movement received! Movements are being updated"
+            );
+            this.getMovements();
+        },
     },
 }
 </script>

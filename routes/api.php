@@ -36,6 +36,8 @@ Route::middleware('auth:api')->get('users/names-emails', 'UserControllerAPI@user
 Route::middleware('auth:api')->get('users/filter', 'UserControllerAPI@filter');
 Route::middleware('auth:api')->put('users/activate-or-deactivate', 'UserControllerAPI@activateOrDesactivate');
 Route::middleware('auth:api')->delete('user/delete', 'UserControllerAPI@removeUser');
+Route::middleware('auth:api')->get('user/getByEmail', 'UserControllerAPI@getUserByEmail');
+Route::middleware('auth:api')->post('user/send-email', 'UserControllerAPI@sendEmail');
 
 //Routes for Movements
 Route::middleware('auth:api')->post('movements/register/income', 'MovementsControllerAPI@registerIncome');
@@ -55,7 +57,6 @@ Route::middleware('auth:api')->get('categories/names', 'CategoryControllerAPI@ca
 
 
 //routes for statistics
-Route::middleware('auth:api')->get('movements/user/statistics/movements-per-month', 'MovementsControllerAPI@movementsPerMonth');
-
-
+Route::middleware('auth:api')->get('movements/admin/statistics/movements-per-month', 'MovementsControllerAPI@movementsPerMonth');
 Route::middleware('auth:api')->get('movements/admin/statistics/users-per-type', 'MovementsControllerAPI@numberOfUsersPerTypes');
+Route::middleware('auth:api')->get('movements/admin/statistics/users-created-per-year', 'MovementsControllerAPI@usersCreatedPerYear');
