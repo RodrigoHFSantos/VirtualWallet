@@ -47,7 +47,8 @@
                         name="iban"
                         type="iban"
                         v-model="data.iban"
-                    />
+                        :rules = "[$v.data.iban.alpha || 'Must have 2 capital letters followed by 23 digits', $v.data.iban.maxLength || 'Can not be more than 25 characters']"
+                        />
 
                     <v-text-field
                         color="blue-grey darken-1"
@@ -69,8 +70,8 @@
 </template>
 
 <script>
-import  {required,numeric} from 'vuelidate/lib/validators';
-
+import  {required,numeric, helpers, maxLength} from 'vuelidate/lib/validators';
+const alpha = helpers.regex('alpha', /^[A-Z]{2}[0-9]{23}/);
   export default {
     name: 'registerIncome',
 
@@ -102,6 +103,10 @@ import  {required,numeric} from 'vuelidate/lib/validators';
             source_description: {
                 required
             },
+            iban: {
+                alpha,
+                maxLength: maxLength(25),
+            }
         }      
     },
     computed: {
