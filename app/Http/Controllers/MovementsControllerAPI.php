@@ -233,4 +233,16 @@ class MovementsControllerAPI extends Controller
         
         return $photo;
     }
+
+    public function movementsPerMonth(){
+
+         for($i = 1; $i < 13; $i++) {
+             $movements[$i] = Movement::whereMonth('date', $i)->get('id');
+         }
+          
+        
+        //$movements = DB::table('movements')->select('date', 'count(date) as num')->gro\upBy('date')->count();
+        //$movements = DB::table('movements')->select('date')->groupBy('date')->count();
+        return $movements;
+    }
 }

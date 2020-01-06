@@ -17,7 +17,8 @@ import VueSocketIO from "vue-socket.io";
 import Toasted from 'vue-toasted';
 import Toast from "vue-toastification";
 import "vue-toastification/dist/index.css";
-import * as VeeValidate from 'vee-validate'
+import * as VeeValidate from 'vee-validate';
+import vueCharts from "vue-chartjs";
 
 Vue.use(Toast, {
   transition: "Vue-Toastification__bounce",
@@ -147,6 +148,7 @@ const app = new Vue({
     router,
     store,
     vuetify,
+    vueCharts,
     created() {
       this.$store.commit('loadTokenAndUserFromSession');
     }

@@ -37,7 +37,7 @@
                   name="iban"
                   type="value"
                   v-model="data.iban"
-                  :rules="[$v.data.iban.required || 'Iban is required']"
+                  :rules="[$v.data.iban.required || 'Iban is required', $v.data.iban.alpha || 'Iban must have 2 capital letters and 23 digits']"
                 />
                 <v-text-field
                   v-if="data.movement_payment_type_selected == 'Multibanco/MB payment'"
@@ -115,7 +115,8 @@
 
 <script>
 
-import  {required,numeric, between,minLength, maxLength} from 'vuelidate/lib/validators';
+import  {required,numeric, between,minLength, maxLength,helpers} from 'vuelidate/lib/validators';
+const alpha = helpers.regex('alpha', /[A-Z]{2}[0-9]{23}/);
 
 export default {
   props: {
@@ -159,6 +160,7 @@ export default {
               required,
               minLength: minLength(24),
               maxLength: maxLength(26),
+              alpha,
             },
             description:{
               required,

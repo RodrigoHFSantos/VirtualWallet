@@ -52,3 +52,7 @@ Route::middleware('auth:api')->get('wallet/me','WalletControllerAPI@currentBalan
 
 //Routes for Categories
 Route::middleware('auth:api')->get('categories/names', 'CategoryControllerAPI@categoriesNames');
+
+
+//routes for statistics
+Route::middleware('auth:api')->get('movements/user/statistics/movements-per-month', 'MovementsControllerAPI@movementsPerMonth');
