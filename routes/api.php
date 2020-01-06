@@ -57,10 +57,7 @@ Route::middleware('auth:api')->get('categories/names', 'CategoryControllerAPI@ca
 
 
 //routes for statistics
-<<<<<<< HEAD
 Route::middleware('auth:api')->get('movements/user/statistics/categories-used', 'MovementsControllerAPI@numberOfCategoriesUsed');
-=======
->>>>>>> 3f7e6ab5621cf909300bec5051cc404ff6db2d5e
 Route::middleware('auth:api')->get('movements/admin/statistics/movements-per-month', 'MovementsControllerAPI@movementsPerMonth');
 Route::middleware('auth:api')->get('movements/admin/statistics/users-per-type', 'MovementsControllerAPI@numberOfUsersPerTypes');
 Route::middleware('auth:api')->get('movements/admin/statistics/users-created-per-year', 'MovementsControllerAPI@usersCreatedPerYear');
