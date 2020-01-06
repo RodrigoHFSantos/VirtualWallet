@@ -64,6 +64,7 @@ io.on('connection', function (socket) {
         let userInfo = loggedUsers.userInfoByID(destUser.id);
         let socket_id = userInfo !== undefined ? userInfo.socketID : null;
         if (socket_id === null) {
+          // console.log(destUser);
           socket.emit("privateMessage_unavailable", destUser);
         } else {
           io.to(socket_id).emit("privateMessage", msg, sourceUser);
@@ -76,56 +77,4 @@ io.on('connection', function (socket) {
           "User has disconnected (socket ID = " + socket.id + ")"
         );
       });
-
-    // socket.on('user_enter',(user) =>{
-    //     loggedUsers.addUserInfo(user, socket.id);
-    //     socket.join('logged');
-    //     console.log(user.email+" entered")
-    // });
-
-    // socket.on('user_exit',(user) =>{
-    //     if(user){
-    //         console.log('client has disconnected ('+user.email+') (socket ID = '+socket.id+')');
-    //         socket.leave('logged');
-    //     }
-    // });
-    
-    socket.on('income_movement',(destinationID, destinationEmail, sourceID) =>{
-        console.log(destinationID);
-        if(destinationID){
-            console.log('Income movement made on wallet '+destinationID+'(socket ID = '+socket.id+')');
-            const userInfo = loggedUsers.userInfoByID(destinationID);
-            if(userInfo){
-                io.to(userInfo.socketID).emit('income_movement_made');
-                io.to(userInfo.socketID).emit('update_wallet');
-                io.to(userInfo.socketID).emit('update_movements');
-            }else{
-                //enviar mail
-                const source = loggedUsers.userInfoByID(sourceID);
-                if(source){
-                    io.to(source.socketID).emit('notify_by_email', destinationEmail);
-                }
-                console.log("send email to "+destinationEmail);
-            }
-        }
-    });
-
-    // socket.on('transfer_movement',(destinationID, destinationEmail, sourceID) =>{
-    //     if(destinationID){
-    //         console.log('Transfer movement to wallet '+destinationID+' (socket ID = '+socket.id+')');
-    //         const userInfo = loggedUsers.userInfoByID(destinationID);
-    //         if(userInfo){
-    //             io.to(userInfo.socketID).emit('transfer_movement_made');
-    //             io.to(userInfo.socketID).emit('update_wallet');
-    //             io.to(userInfo.socketID).emit('update_movements');
-    //         }else{
-    //             //enviar mail
-    //             const source = loggedUsers.userInfoByID(sourceID);
-    //             if(source){
-    //                 io.to(source.socketID).emit('notify_by_email', destinationEmail);
-    //             }
-    //             console.log("send email to "+destinationEmail);
-    //         }
-    //     }
-    // });
 });
