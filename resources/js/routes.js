@@ -35,6 +35,9 @@ const userRegisterExpense = Vue.component('userRegisterExpense', UserRegisterExp
 import AdminStatisticsComponent from './components/admin/statistics/AdminStatistics.vue';
 const adminStatistics = Vue.component('adminStatistics', AdminStatisticsComponent);
 
+import UserStatisticsComponent from './components/admin/statistics/UserStatistics.vue';
+const userStatistics = Vue.component('userStatistics', UserStatisticsComponent);
+
 import ManageAllUserAccountsComponent from './components/admin/ManageAllUserAccounts.vue';
 const manageAllUserAccounts = Vue.component('manageAllUserAccounts', ManageAllUserAccountsComponent);
 
@@ -127,6 +130,14 @@ const routes = [
         meta: {
             requiresAuth: true,
             requiresAdmin: true,
+        }
+    },
+    {
+        path: '/user/statistics',
+        name: 'user-statistics',
+        component: userStatistics,
+        meta: {
+            requiresAuth: true,
         }
     },
 

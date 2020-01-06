@@ -61,6 +61,7 @@ export default {
             }
          })
          .catch(error => {
+           console.log(error);
                 this.$toast.error("Login Failed!", {
                   position: "top-right",
                   timeout: 5000,

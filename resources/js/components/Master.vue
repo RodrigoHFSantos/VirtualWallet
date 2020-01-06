@@ -30,6 +30,14 @@
               <v-list-item-title>Wallet</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
+          <v-list-item v-if="loggedIn && isUser" :to="{ name: 'user-statistics' }">
+            <v-list-item-action>
+              <v-icon>mdi-chart-bell-curve</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>Statistics</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
           <v-list-item v-if="loggedIn" :to="{ name: 'editprofile' }">
             <v-list-item-action>
               <v-icon>mdi-pencil</v-icon>

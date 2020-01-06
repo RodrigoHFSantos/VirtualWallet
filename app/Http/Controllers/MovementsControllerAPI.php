@@ -15,6 +15,18 @@ class MovementsControllerAPI extends Controller
 {
 
     public function numberOfCategoriesUsed(){
+
+        $user = Auth::user();
+
+        $wallet = Wallet::where('email', $user->email)->first();
+
+        $movements = Movement::where('wallet_id', $wallet->id)
+        ->where('movements.type', '=', 'e')
+        ->join('categories', 'movements.category_id', '=', 'categories.id')
+        ->groupBy('movements.category_id')
+        ->select('categories.name',DB::raw('count(*) as numero'))->get();
+
+        return $movements;
         
     }
 

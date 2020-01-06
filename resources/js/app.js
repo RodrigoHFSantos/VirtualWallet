@@ -39,11 +39,11 @@ Vue.use(
 Vue.use(VueRouter);
 Vue.use(Vuelidate);
 Vue.use(Toasted);
-Vue.use(new VueSocketio({
-  debug: true,
-  // connection: 'http://192.168.10.10:8080'
-  connection: 'http://127.0.0.1:8080'
-}));
+// Vue.use(new VueSocketio({
+//   debug: true,
+//   // connection: 'http://192.168.10.10:8080'
+//   connection: 'http://127.0.0.1:8080'
+// }));
 
 const router = new VueRouter({
     routes,
