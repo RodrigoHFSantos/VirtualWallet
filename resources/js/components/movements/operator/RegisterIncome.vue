@@ -119,7 +119,8 @@ import  {required,numeric} from 'vuelidate/lib/validators';
                 console.log(this.data);
                 axios.post('api/movements/register/income', this.data)
                 .then(response => {
-                    console.log(this.data);
+                    // console.log(response.data.wallet_id);
+                    let wallet_id = response.data.wallet_id;
                     this.$toast.success("Success", {
                             position: "top-right ",
                             timeout: 5000,
@@ -127,11 +128,15 @@ import  {required,numeric} from 'vuelidate/lib/validators';
                             pauseOnFocusLoss: true,
                             pauseOnHover: true,
                             draggable: true,
-                            draggablePercent: 0.6,
+                            draggablePercent: 0.6,  
                             hideCloseButton: false,
                             hideProgressBar: false,
                             icon: true
                     });
+                    console.log(wallet_id);
+                    console.log(this.data.email);
+                    console.log(this.$store.state.user.id);
+                    this.$socket.emit('income_movement',wallet_id, this.data.email,this.$store.state.user.id);
                     this.$router.push({ name: "home" });
                 })
                 .catch(error => {

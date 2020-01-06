@@ -13,6 +13,18 @@ use App\Http\Resources\Resource;
 
 class MovementsControllerAPI extends Controller
 {
+
+    public function numberOfCategoriesUsed(){
+
+    }
+    
+    public function numberOfUsersPerTypes(){
+        $typeUsers[0] = User::where('type', 'u')->count();
+        $typeUsers[1] = User::where('type', 'o')->count();
+        $typeUsers[2] = User::where('type', 'a')->count();
+        return $typeUsers;
+    }
+
     public function editMovement(Request $request){
         $category = Category::where('name', $request->category)->first();
         if(Movement::where('id', $request->id)->update(['category_id' => $category->id ,'description' => $request->description]) == 1){
@@ -126,7 +138,7 @@ class MovementsControllerAPI extends Controller
             $wallet->balance += $request->value;
             Wallet::where('email', $wallet->email)->update(['balance' => $wallet->balance]);
             // $wallet->save();
-            // return $movement;
+            return $movement;
         }else{
             return response()->json(['message' => 'Não existe uma wallet com este email!'], 404);
         }
@@ -234,15 +246,4 @@ class MovementsControllerAPI extends Controller
         return $photo;
     }
 
-    public function movementsPerMonth(){
-
-         for($i = 1; $i < 13; $i++) {
-             $movements[$i] = Movement::whereMonth('date', $i)->get('id');
-         }
-          
-        
-        //$movements = DB::table('movements')->select('date', 'count(date) as num')->gro\upBy('date')->count();
-        //$movements = DB::table('movements')->select('date')->groupBy('date')->count();
-        return $movements;
-    }
 }

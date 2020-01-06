@@ -49,6 +49,7 @@ export default {
          })
          .then(response => {
             this.$store.commit("setUser", response.data.data);
+            this.$socket.emit('user_enter',response.data.data);
             if(this.$store.getters.isUser){
               this.$router.push({ name: "wallet" });
             }

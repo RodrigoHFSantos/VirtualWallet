@@ -19,6 +19,7 @@ import Toast from "vue-toastification";
 import "vue-toastification/dist/index.css";
 import * as VeeValidate from 'vee-validate';
 import vueCharts from "vue-chartjs";
+import VueSocketio from 'vue-socket.io';
 
 Vue.use(Toast, {
   transition: "Vue-Toastification__bounce",
@@ -38,19 +39,16 @@ Vue.use(
 Vue.use(VueRouter);
 Vue.use(Vuelidate);
 Vue.use(Toasted);
+Vue.use(new VueSocketio({
+  debug: true,
+  // connection: 'http://192.168.10.10:8080'
+  connection: 'http://127.0.0.1:8080'
+}));
 
 const router = new VueRouter({
     routes,
     // history = true //era suposto tirar o # do url mas nao funciona
 })
-
-
-// Vue.use(new VueSocketIO({
-//   debug: true,
-//   connection: 'http://10.200.0.203'
-// })); 
- 
-
 
 router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
@@ -149,6 +147,53 @@ const app = new Vue({
     store,
     vuetify,
     vueCharts,
+    sockets:{
+      privateMessage(dataFromServer) {
+        let name =
+            dataFromServer[1] === null ? "Unknown" : dataFromServer[1].name;
+        this.$toasted.show(
+            'Message "' + dataFromServer[0] + '" sent from "' + name + '"'
+        );
+    },
+    privateMessage_unavailable(destUser) {
+        this.$toasted.error(
+            'User "' + destUser.name + '" is not available'
+        );
+    },
+    privateMessage_sent(dataFromServer) {
+        this.$toasted.success(
+            'Message "' +
+                dataFromServer[0] +
+                '" was sent to "' +
+                dataFromServer[1].name +
+                '"'
+        );
+    },
+      income_movement_made(){
+        this.$toasted.show("You have received an Income Movement");
+      },
+      transfer_movement_made(){
+        this.$toasted.show("A Transfer Movement was made to your wallet");
+      },
+      // notify_by_email(email){
+      //   if(email){
+      //     console.log("enviar email para "+email)
+      //     let auxType = "";
+      //     if(this.$store.state.user.type == 'u'){
+      //       auxType = "Income";
+      //     }else{
+      //       auxType = "Transfer";
+      //     }
+      //     axios.post('/api/sendEmail', {to: email, typeEmail: auxType})
+      //     .then(response => {          
+      //       this.$toasted.success(response.data.success);
+      //     })
+      //     .catch(response => {
+      //         this.$toasted.error("Unable to notify "+email);
+      //     });
+      //   }
+      // },
+    },
     created() {
       this.$store.commit('loadTokenAndUserFromSession');
     }

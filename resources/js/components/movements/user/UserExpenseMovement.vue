@@ -185,6 +185,7 @@ export default {
           this.clearAllFields();
           this.dialog = false;
           this.$emit('registed');
+          this.$socket.emit('transfer_movement',response.data.destinationID, this.movement.email,this.$store.state.user.id);
 
           this.$toast.success("Success", {
             position: "top-right ",

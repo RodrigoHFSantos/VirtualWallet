@@ -2,6 +2,9 @@
   <div class="small">
     <h4>Number of movements per month in last year (2019)</h4>
     <line-chart :chart-data="datacollectionPerMonth" :height="100"></line-chart>
+  
+    <h4>Number of users per type</h4>
+    <line-chart :chart-data="datacollectionPerUserTypes" :height="100"></line-chart>
   </div>
 </template>
 
@@ -14,9 +17,12 @@ export default {
   },
   data() {
     return {
-      objToArray: null,
-      movementsPerMonth: [],
-      datacollectionPerMonth: {}
+        objToArray: null,
+        objToArray2: null,
+        datacollectionPerUserTypes: {},
+        numUsers: [],
+        movementsPerMonth: [],
+        datacollectionPerMonth: {}
     };
   },
 
@@ -59,12 +65,41 @@ export default {
         .catch(error => {
           console.log(error);
         });
+    },
+    getUsersPerType() {
+      axios
+        .get("api/movements/admin/statistics/users-per-type")
+        .then(response => {
+            this.objToArray = Object.values(response.data);
+            this.objToArray.forEach(element => {
+                this.numUsers.push(element);
+            });
+        
+        this.datacollectionPerUserTypes = {
+        labels: [
+          "User",
+          "Operator",
+          "Admin",
+        ],
+        datasets: [
+          {
+            label: "Movements",
+            backgroundColor: "#FF0066",
+            data: this.numUsers
+          }
+        ]
+        };
+        })
+        .catch(error => {
+          console.log(error);
+        });
     }
   },
 
   mounted() {
     try {
       this.getMovementsPerMonth();
+        this.getUsersPerType();
       if (this.$store.state.token == "") {
         this.$router.push({ name: "login" });
       }
@@ -72,7 +107,7 @@ export default {
       console.log(error);
     }
   }
-};
+}
 </script>
 
 <style>
